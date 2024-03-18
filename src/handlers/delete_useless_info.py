@@ -28,7 +28,10 @@ async def create_chat_member_log(message: Message, db: DB, join: bool, bot: Bot)
 
 @router.message(F.left_chat_member)
 async def on_user_leave(message: Message, db: DB, bot: Bot) -> None:
-    await create_chat_member_log(message, db, False, bot)
+    if message.left_chat_member.id != bot.id:
+        await create_chat_member_log(message, db, False, bot)
+        return
+    await db.chat.delete(message.chat.id)
 
 
 @router.message(F.new_chat_member)

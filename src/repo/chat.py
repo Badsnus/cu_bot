@@ -4,7 +4,6 @@ from aiogram import Bot
 from aiogram.types import ChatMemberAdministrator
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased
 
 from src.models import Chat, UserChat
 
@@ -80,16 +79,9 @@ class ChatRepo:
 
     async def add_admin(self,
                         admin_id: int,
-                        chat_id: int,
-                        bot: Bot) -> None:
+                        chat_id: int) -> None:
 
-        need_to_add = []
-        if admin_id != bot.id:
-            need_to_add.append(UserChat(chat_id=chat_id, user_id=admin_id))
-        else:
-            assert 'ASDASDASDASD' == '1'
-
-        self.session.add_all(need_to_add)
+        self.session.add(UserChat(chat_id=chat_id, user_id=admin_id))
         await self.session.commit()
 
     async def delete_admin(self, admin_id: int, chat_id: int) -> None:
@@ -106,3 +98,12 @@ class ChatRepo:
         )
 
         return (await self.session.scalars(query)).all()
+
+    async def delete(self, chat_id: int) -> None:
+        await self.session.execute(
+            delete(UserChat).where(UserChat.chat_id == chat_id)
+        )
+        await self.session.execute(
+            delete(Chat).where(Chat.telegram_id == chat_id)
+        )
+        await self.session.commit()

@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    BigInteger, Column, Integer, ForeignKey, String, Table,
+    BigInteger, Column, Integer, String,
 )
 
 from src.models import Base
@@ -23,4 +23,3 @@ class UserChat(Base):
 
     user_id = Column(BigInteger())
     chat_id = Column(BigInteger())
-
