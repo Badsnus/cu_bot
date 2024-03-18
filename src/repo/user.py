@@ -18,3 +18,12 @@ class UserRepo:
 
     async def get(self, id: int) -> User | None:
         return await self.session.scalar(select(User).where(User.id == id))
+
+    async def create(self, telegram_id: int, commit=True) -> User:
+        user = User(telegram_id=telegram_id)
+
+        self.session.add(User)
+        if commit:
+            await self.session.commit()
+
+        return user
