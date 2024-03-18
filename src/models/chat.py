@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    BigInteger, Column, Integer,
+    BigInteger, Column, Integer, ForeignKey, Table,
 )
 
 from src.models import Base
@@ -12,3 +12,11 @@ class Chat(Base):
     telegram_id = Column(BigInteger(), unique=True, index=True)
 
     moderation_level = Column(Integer(), default=100)
+
+
+association_table = Table(
+    'users_chats',
+    Base.metadata,
+    Column('user_id', ForeignKey('users.id')),
+    Column('chat_id', ForeignKey('chats.id')),
+)
