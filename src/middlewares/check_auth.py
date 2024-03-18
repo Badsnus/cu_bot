@@ -16,10 +16,11 @@ class CheckAuthMiddleware(BaseMiddleware):
             data: Dict[str, Any],
     ) -> Any:
         db: DB = data.get('db')
+
         user = await db.user.get_by_tg_id(telegram_id=event.from_user.id)
         if not user:
-            ...
-            # await db.user.create()
+            user = await db.user.create(event.from_user.id)
         data['user'] = user
+
         return await handler(event, data)
 
