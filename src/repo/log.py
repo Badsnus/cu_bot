@@ -37,14 +37,14 @@ class LogRepo:
         return log
 
     async def get_logs(self, user_id: int, chat_id: int) -> Sequence[Log]:
-        user_chat_alias = aliased(UserChat)
+        print(chat_id)
         query = (
             select(Log)
-            .join_from(UserChat, Log, Log.chat_id == user_chat_alias.chat_id)
-            .where(user_chat_alias.user_id == user_id)
+            .join(UserChat, Log.chat_id == UserChat.chat_id)
+            .where(UserChat.user_id == user_id)
         )
 
         if chat_id != -1:
-            query = query.where(Log.id == chat_id)
+            query = query.where(Log.chat_id == chat_id)
 
         return (await self.session.scalars(query)).all()

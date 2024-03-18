@@ -19,7 +19,9 @@ async def get_show_groups_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup
 
     chats = await db.chat.get_chats_by_user(user_id)
     for chat in chats:
-        builder.row(InlineKeyboardButton(text=chat.chat_name, callback_data=RetrieveGroupCallback(id=chat.id).pack()))
+        builder.row(
+            InlineKeyboardButton(text=chat.chat_name, callback_data=RetrieveGroupCallback(id=chat.telegram_id).pack()),
+        )
     builder.row(InlineKeyboardButton(text='Выгрузить все логи', callback_data=GetLogsCallback().pack()))
     return builder.as_markup()
 
@@ -31,9 +33,10 @@ class ChangeModerLevelCallback(CallbackData, prefix='change_moder_level'):
 async def get_retrieve_keyboard(chat: Chat) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text='Выключить модерацию', callback_data=ChangeModerLevelCallback(id=chat.id).pack()),
+            InlineKeyboardButton(text='Выключить модерацию',
+                                 callback_data=ChangeModerLevelCallback(id=chat.telegram_id).pack()),
         ],
         [
-            InlineKeyboardButton(text='Выгрузить логи', callback_data=GetLogsCallback(id=chat.id).pack()),
+            InlineKeyboardButton(text='Выгрузить логи', callback_data=GetLogsCallback(id=chat.telegram_id).pack()),
         ]
     ])

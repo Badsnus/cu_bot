@@ -36,7 +36,7 @@ async def send_chat_retrieve_message(call: CallbackQuery, chat: Chat) -> None:
 
 @router.callback_query(RetrieveGroupCallback.filter())
 async def show_retrieve_group(call: CallbackQuery, callback_data: RetrieveGroupCallback, db: DB) -> None:
-    chat = await db.chat.get(callback_data.id)
+    chat = await db.chat.get_by_tg_id(callback_data.id)
     await send_chat_retrieve_message(call, chat)
 
 
