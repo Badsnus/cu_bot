@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from config import Config, load_config
 from src.handlers import routers
-from src.middlewares import CheckAuthMiddleware, DbSessionMiddleware
+from src.middlewares import DbSessionMiddleware
 from src.models import Base
 
 logger = logging.getLogger(__name__)
@@ -37,9 +37,6 @@ async def main():
 
     dp.include_routers(*routers)
     dp.update.middleware(DbSessionMiddleware(session_pool=sessionmaker))
-
-    dp.message.middleware(CheckAuthMiddleware())
-    dp.callback_query.middleware(CheckAuthMiddleware())
 
     await bot.delete_webhook(drop_pending_updates=False)
     await dp.start_polling(bot)
