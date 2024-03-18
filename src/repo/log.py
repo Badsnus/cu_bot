@@ -43,6 +43,8 @@ class LogRepo:
             .join_from(UserChat, Log, Log.chat_id == user_chat_alias.chat_id)
             .where(user_chat_alias.user_id == user_id)
         )
+
         if chat_id != -1:
-            query = query.where(user_chat_alias.chat_id == chat_id)
+            query = query.where(Log.id == chat_id)
+
         return (await self.session.scalars(query)).all()
