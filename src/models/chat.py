@@ -16,9 +16,11 @@ class Chat(Base):
     moderation_level = Column(Integer(), default=100)
 
 
-association_table = Table(
-    'users_chats',
-    Base.metadata,
-    Column('user_id', ForeignKey('users.id')),
-    Column('chat_id', ForeignKey('chats.id')),
-)
+class UserChat(Base):
+    __tablename__ = 'users_chats'
+
+    id = Column(Integer(), primary_key=True)
+
+    user_id = Column(BigInteger())
+    chat_id = Column(BigInteger())
+
