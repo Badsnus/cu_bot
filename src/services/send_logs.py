@@ -1,3 +1,4 @@
+import os
 import time
 
 from aiogram.types import CallbackQuery, FSInputFile
@@ -26,3 +27,8 @@ async def send_logs(call: CallbackQuery, db: DB, id: int) -> None:
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(logs_text)
     await call.message.answer_document(document=FSInputFile(filename), caption='logs')
+
+    try:
+        os.remove(filename)
+    except:
+        pass
