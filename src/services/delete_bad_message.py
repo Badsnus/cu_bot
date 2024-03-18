@@ -2,6 +2,7 @@ import re
 
 from aiogram.types import Message
 
+from src.models import Chat
 from src.repo import DB
 
 # todo офк надо отсюда вынести
@@ -13,9 +14,9 @@ async def is_bad_text(text):
     return bool(words & bad_words)
 
 
-async def delete_bad_message(message: Message, db: DB) -> None:
+async def delete_bad_message(message: Message, db: DB, chat: Chat) -> None:
     is_bad = await is_bad_text(message.text)
-    if is_bad:
+    if is_bad and chat.moderation_level != 0:
         try:
             await message.delete()
 
