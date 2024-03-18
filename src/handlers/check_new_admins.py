@@ -8,7 +8,7 @@ router: Router = Router()
 
 
 @router.chat_member()
-async def edit_admins(chat_member_updated: ChatMemberUpdated, db: DB, bot: Bot) -> None:
+async def edit_admins(chat_member_updated: ChatMemberUpdated, db: DB) -> None:
     old = chat_member_updated.old_chat_member
     new = chat_member_updated.new_chat_member
 

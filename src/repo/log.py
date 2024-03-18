@@ -3,9 +3,8 @@ from typing import Sequence
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased
 
-from src.models import Log, UserChat, Chat
+from src.models import Log, UserChat
 
 
 class LogRepo:
@@ -37,7 +36,6 @@ class LogRepo:
         return log
 
     async def get_logs(self, user_id: int, chat_id: int) -> Sequence[Log]:
-        print(chat_id)
         query = (
             select(Log)
             .join(UserChat, Log.chat_id == UserChat.chat_id)

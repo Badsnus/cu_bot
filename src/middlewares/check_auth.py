@@ -1,6 +1,6 @@
 from typing import Callable, Awaitable, Dict, Any
 
-from aiogram import BaseMiddleware, Bot
+from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
 
 from src.repo import DB
@@ -23,4 +23,3 @@ class CheckAuthMiddleware(BaseMiddleware):
         data['user'] = user
 
         return await handler(event, data)
-

@@ -35,11 +35,6 @@ class ChatRepo:
             select(Chat).where(Chat.telegram_id == telegram_id)
         )
 
-    async def get(self, id: int) -> Chat | None:
-        return await self.session.scalar(
-            select(Chat).where(Chat.id == id)
-        )
-
     async def update_name(self, chat: Chat, new_chat_name: str) -> Chat:
         chat.chat_name = new_chat_name
 
@@ -58,11 +53,6 @@ class ChatRepo:
         await self.session.commit()
 
         return chat
-
-    async def get_chat_user(self, chat_id: int, user_id: int) -> UserChat | None:
-        return await self.session.scalar(
-            select(UserChat).where((UserChat.chat_id == chat_id) & (UserChat.user_id == user_id))
-        )
 
     async def add_admins(self,
                          admins: list[ChatMemberAdministrator],
