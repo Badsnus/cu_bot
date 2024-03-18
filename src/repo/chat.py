@@ -2,7 +2,7 @@ from typing import Sequence
 
 from aiogram import Bot
 from aiogram.types import ChatMemberAdministrator
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
 
@@ -69,14 +69,33 @@ class ChatRepo:
                          admins: list[ChatMemberAdministrator],
                          chat_id: int,
                          bot: Bot) -> None:
+
         need_to_add = []
         for admin in admins:
             if admin.user.id != bot.id:
-                user_chat = await self.get_chat_user(chat_id, admin.user.id)
-                if user_chat is None:
-                    need_to_add.append(UserChat(chat_id=chat_id, user_id=admin.user.id))
+                need_to_add.append(UserChat(chat_id=chat_id, user_id=admin.user.id))
 
         self.session.add_all(need_to_add)
+        await self.session.commit()
+
+    async def add_admin(self,
+                        admin_id: int,
+                        chat_id: int,
+                        bot: Bot) -> None:
+
+        need_to_add = []
+        if admin_id != bot.id:
+            need_to_add.append(UserChat(chat_id=chat_id, user_id=admin_id))
+        else:
+            assert 'ASDASDASDASD' == '1'
+
+        self.session.add_all(need_to_add)
+        await self.session.commit()
+
+    async def delete_admin(self, admin_id: int, chat_id: int) -> None:
+        await self.session.execute(
+            delete(UserChat).where((UserChat.chat_id == chat_id) & (UserChat.user_id == admin_id))
+        )
         await self.session.commit()
 
     async def get_chats_by_user(self, user_id: int) -> Sequence[Chat]:
