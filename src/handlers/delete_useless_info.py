@@ -1,21 +1,17 @@
-from aiogram import F, Router
+from aiogram import Bot, F, Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
 from src.repo import DB
+from src.services import update_chat_info
 
 router: Router = Router()
 
 
-async def create_chat_member_log(message: Message, db: DB, join: bool) -> None:
+async def create_chat_member_log(message: Message, db: DB, join: bool, bot: Bot) -> None:
     try:
         await message.delete()
-        chat = await db.chat.get_by_tg_id(message.chat.id)
-        if chat is None:
-            chat = await db.chat.create(telegram_id=message.chat.id, chat_name=message.chat.title)
-
-        if chat.chat_name != message.chat.title:
-            chat = await db.chat.update_name(chat, message.chat.title)
+        await update_chat_info(message, db, bot)
 
         await db.log.create(
             chat_id=message.chat.id,
@@ -31,10 +27,10 @@ async def create_chat_member_log(message: Message, db: DB, join: bool) -> None:
 
 
 @router.message(F.left_chat_member)
-async def on_user_leave(message: Message, db: DB) -> None:
-    await create_chat_member_log(message, db, False)
+async def on_user_leave(message: Message, db: DB, bot: Bot) -> None:
+    await create_chat_member_log(message, db, False, bot)
 
 
 @router.message(F.new_chat_member)
-async def gg(message: Message, db: DB) -> None:
-    await create_chat_member_log(message, db, True)
+async def gg(message: Message, db: DB, bot: Bot) -> None:
+    await create_chat_member_log(message, db, True, bot)
