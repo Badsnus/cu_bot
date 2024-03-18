@@ -1,7 +1,10 @@
+from typing import Sequence
+
 from aiogram import Bot
 from aiogram.types import ChatMemberAdministrator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from src.models import Chat, UserChat
 
@@ -59,3 +62,13 @@ class ChatRepo:
 
         self.session.add_all(need_to_add)
         await self.session.commit()
+
+    async def get_chats_by_user(self, user_id: int) -> Sequence[Chat]:
+        user_chat_alias = aliased(UserChat)
+        query = (
+            select(Chat)
+            .join_from(UserChat, Chat, Chat.telegram_id == user_chat_alias.chat_id)
+            .where(user_chat_alias.user_id == user_id)
+        )
+
+        return (await self.session.scalars(query)).all()
