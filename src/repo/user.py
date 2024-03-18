@@ -1,5 +1,3 @@
-from typing import Sequence
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,7 +20,7 @@ class UserRepo:
     async def create(self, telegram_id: int, commit=True) -> User:
         user = User(telegram_id=telegram_id)
 
-        self.session.add(User)
+        self.session.add(user)
         if commit:
             await self.session.commit()
 
