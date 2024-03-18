@@ -1,9 +1,11 @@
 from datetime import datetime
+from typing import Sequence
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
-from src.models import Log
+from src.models import Log, UserChat, Chat
 
 
 class LogRepo:
@@ -33,3 +35,13 @@ class LogRepo:
             await self.session.commit()
 
         return log
+
+    async def get_logs(self, user_id: int) -> Sequence[Log]:
+        user_chat_alias = aliased(UserChat)
+        query = (
+            select(Log)
+            .join_from(UserChat, Log, Log.chat_id == user_chat_alias.chat_id)
+            .where(user_chat_alias.user_id == user_id)
+        )
+
+        return (await self.session.scalars(query)).all()

@@ -1,0 +1,12 @@
+test | badsnus | hren | 2024-03-18 14:49:06
+test | badsnus | spam | 2024-03-18 14:45:40
+test | badsnus | spam | 2024-03-18 14:48:51
+test | badsnus | spam | 2024-03-18 14:54:30
+test | badsnus | spam | 2024-03-18 14:59:03
+test | badsnus | user join | 2024-03-18 14:56:03
+test | badsnus | user leave | 2024-03-18 13:35:58
+test | badsnus | user leave | 2024-03-18 14:54:40
+test | ewgwegwgwegw41 | user join | 2024-03-18 13:35:37
+test | ewgwegwgwegw41 | user join | 2024-03-18 14:17:42
+test | ewgwegwgwegw41 | user join | 2024-03-18 14:19:11
+test | ewgwegwgwegw41 | user leave | 2024-03-18 14:18:47
