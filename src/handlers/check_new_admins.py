@@ -13,6 +13,6 @@ async def edit_admins(chat_member_updated: ChatMemberUpdated, db: DB, bot: Bot) 
     new = chat_member_updated.new_chat_member
 
     if old.status == ChatMemberStatus.MEMBER and new.status == ChatMemberStatus.ADMINISTRATOR:
-        await db.chat.add_admin(new.user.id, chat_member_updated.chat.id, bot)
+        await db.chat.add_admin(new.user.id, chat_member_updated.chat.id)
     elif old.status == ChatMemberStatus.ADMINISTRATOR and new.status != ChatMemberStatus.ADMINISTRATOR:
         await db.chat.delete_admin(new.user.id, chat_member_updated.chat.id)
