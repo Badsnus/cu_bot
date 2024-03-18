@@ -10,7 +10,8 @@ async def send_logs(call: CallbackQuery, db: DB, id: int) -> None:
         await call.message.edit_text('Готовлю логи')
     except:
         pass
-    logs = await db.log.get_logs(call.from_user.id)
+
+    logs = await db.log.get_logs(call.from_user.id, id)
 
     logs_text = ''
     for log in logs:

@@ -36,8 +36,24 @@ class ChatRepo:
             select(Chat).where(Chat.telegram_id == telegram_id)
         )
 
+    async def get(self, id: int) -> Chat | None:
+        return await self.session.scalar(
+            select(Chat).where(Chat.id == id)
+        )
+
     async def update_name(self, chat: Chat, new_chat_name: str) -> Chat:
         chat.chat_name = new_chat_name
+
+        self.session.add(chat)
+        await self.session.commit()
+
+        return chat
+
+    async def update_moder_level(self, chat_id: int) -> Chat:
+        # костыль так как пока что включенная модерация - это больше нуля
+        # а по дефолту стоит 100 - это типа минимальная планка отсева должна быть
+        chat = await self.get(chat_id)
+        chat.moderation_level = 100 - chat.moderation_level
 
         self.session.add(chat)
         await self.session.commit()

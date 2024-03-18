@@ -36,12 +36,13 @@ class LogRepo:
 
         return log
 
-    async def get_logs(self, user_id: int) -> Sequence[Log]:
+    async def get_logs(self, user_id: int, chat_id: int) -> Sequence[Log]:
         user_chat_alias = aliased(UserChat)
         query = (
             select(Log)
             .join_from(UserChat, Log, Log.chat_id == user_chat_alias.chat_id)
             .where(user_chat_alias.user_id == user_id)
         )
-
+        if chat_id != -1:
+            query = query.where(user_chat_alias.chat_id == chat_id)
         return (await self.session.scalars(query)).all()
