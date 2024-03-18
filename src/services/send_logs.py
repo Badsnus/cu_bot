@@ -17,6 +17,10 @@ async def send_logs(call: CallbackQuery, db: DB, id: int) -> None:
     for log in logs:
         logs_text += f'{log.chat_name} | {log.user_name} | {log.message} | {log.time}\n'
 
+    if logs_text == '':
+        await call.answer('Логов нет')
+        return
+
     filename = f'file_for_log{time.time()}.txt'
 
     with open(filename, 'w', encoding='utf-8') as f:
