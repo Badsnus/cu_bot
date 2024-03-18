@@ -1,10 +1,12 @@
-from aiogram import Router
-from aiogram.filters import Command
+from aiogram import F, Router
 from aiogram.types import Message
+
+from src.keyboards import main_menu
 
 router: Router = Router()
 
 
-@router.message(Command('start'))
+@router.message((F.text == '/start') & (F.chat.type == 'private'))
 async def start_handler(message: Message) -> None:
-    await message.answer(text='Bot модератор')
+    await message.answer(text='Бот админ',
+                         reply_markup=main_menu)
