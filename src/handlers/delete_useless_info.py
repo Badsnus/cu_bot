@@ -9,8 +9,7 @@ from src.services.create_service_notig_log import create_member_join_log
 router: Router = Router()
 
 
-@router.message(F.left_chat_member)
-async def on_user_leave(message: Message, db: DB, bot: Bot) -> None:
+async def update_chat_info_and_delete_message(message: Message, db: DB, bot: Bot) -> None:
     await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
@@ -19,6 +18,14 @@ async def on_user_leave(message: Message, db: DB, bot: Bot) -> None:
         db=db,
     )
 
+    try:
+        await message.delete()
+    except:
+        pass
+
+
+@router.message(F.left_chat_member)
+async def on_user_leave(message: Message, db: DB, bot: Bot) -> None:
     await check_is_bot_kicked_and_create_log(
         bot_id=bot.id,
         chat_id=message.chat.id,
@@ -31,22 +38,11 @@ async def on_user_leave(message: Message, db: DB, bot: Bot) -> None:
         db=db,
     )
 
-    try:
-        await message.delete()
-    except:
-        pass
+    await update_chat_info_and_delete_message(message, db, bot)
 
 
 @router.message(F.new_chat_member)
 async def on_user_join(message: Message, db: DB, bot: Bot) -> None:
-    await update_chat_info(
-        chat_id=message.chat.id,
-        chat_name=message.chat.title,
-        admins=await bot.get_chat_administrators(message.chat.id),
-        bot_id=bot.id,
-        db=db,
-    )
-
     await create_member_join_log(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
@@ -58,7 +54,4 @@ async def on_user_join(message: Message, db: DB, bot: Bot) -> None:
         db=db,
     )
 
-    try:
-        await message.delete()
-    except:
-        pass
+    await update_chat_info_and_delete_message(message, db, bot)
