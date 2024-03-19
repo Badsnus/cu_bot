@@ -30,7 +30,7 @@ async def create_bad_message_log(db: DB,
     )
 
 
-async def create_log_if_message_is_bad(
+async def check_message_and_create_log_if_message_is_bad(
         chat_id: int,
         chat_name: str,
         user_name: str,
