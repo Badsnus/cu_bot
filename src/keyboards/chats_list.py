@@ -5,11 +5,11 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from src.repo import DB
 
 
-class RetrieveGroupCallback(CallbackData, prefix='group_retrieve'):
+class RetrieveChatCallback(CallbackData, prefix='chat_retrieve'):
     id: int
 
 
-class GetLogsCallback(CallbackData, prefix='group_logs'):
+class GetLogsCallback(CallbackData, prefix='chats_logs'):
     id: int | None = None
 
 
@@ -21,7 +21,7 @@ async def get_show_chats_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup:
         builder.row(
             InlineKeyboardButton(
                 text=chat.chat_name,
-                callback_data=RetrieveGroupCallback(id=chat.telegram_id).pack(),
+                callback_data=RetrieveChatCallback(id=chat.telegram_id).pack(),
             ),
         )
     builder.row(InlineKeyboardButton(text='Выгрузить все логи', callback_data=GetLogsCallback().pack()))

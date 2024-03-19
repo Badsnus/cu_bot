@@ -2,10 +2,7 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from src.models import Chat
-
-
-class GetLogsCallback(CallbackData, prefix='group_logs'):
-    id: int | None = None
+from src.keyboards.chats_list import GetLogsCallback
 
 
 class ChangeModerLevelCallback(CallbackData, prefix='change_moder_level'):
