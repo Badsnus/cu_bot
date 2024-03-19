@@ -19,7 +19,7 @@ class Chat(Base):
 
     chat_name = Column(String(130))
 
-    moderation_level = Column(String(), default=ChatModerationLevelEnum.on)
+    moderation_level = Column(String(10), default=ChatModerationLevelEnum.on)
 
 
 class UserChat(Base):
