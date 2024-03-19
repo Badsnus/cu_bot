@@ -1,8 +1,15 @@
+from enum import Enum
+
 from sqlalchemy import (
     BigInteger, Column, Integer, String,
 )
 
 from src.models import Base
+
+
+class ChatModerationLevelEnum(Enum):
+    on = 'on'
+    off = 'off'
 
 
 class Chat(Base):
@@ -12,7 +19,7 @@ class Chat(Base):
 
     chat_name = Column(String(130))
 
-    moderation_level = Column(Integer(), default=100)
+    moderation_level = Column(String(), default=ChatModerationLevelEnum.on)
 
 
 class UserChat(Base):

@@ -4,7 +4,7 @@ from aiogram.types import ChatMemberAdministrator
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models import Chat, UserChat
+from src.models import Chat, ChatModerationLevelEnum, UserChat
 
 
 class ChatRepo:
@@ -15,8 +15,10 @@ class ChatRepo:
     async def create(self,
                      telegram_id: int,
                      chat_name: str,
-                     moderation_level=100,
+                     moderation_level: str = ChatModerationLevelEnum.on.value,
                      commit=True) -> Chat:
+        assert moderation_level in ChatModerationLevelEnum.__members__
+
         chat = Chat(
             telegram_id=telegram_id,
             chat_name=chat_name,
@@ -43,10 +45,13 @@ class ChatRepo:
         return chat
 
     async def update_moder_level(self, chat_id: int) -> Chat:
-        # костыль так как пока что включенная модерация - это больше нуля
-        # а по дефолту стоит 100 - это типа минимальная планка отсева должна быть
+        # пока что так, так как всего два режима
         chat = await self.get(chat_id)
-        chat.moderation_level = 100 - chat.moderation_level
+
+        if chat.moderation_level == ChatModerationLevelEnum.on.value:
+            chat.moderation_level = ChatModerationLevelEnum.off.value
+        else:
+            chat.moderation_level = ChatModerationLevelEnum.on.value
 
         self.session.add(chat)
         await self.session.commit()

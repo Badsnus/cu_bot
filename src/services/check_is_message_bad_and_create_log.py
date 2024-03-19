@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from src.models import Chat
+from src.models import Chat, ChatModerationLevelEnum
 from src.repo import DB
 
 # todo офк надо отсюда вынести
@@ -40,9 +40,12 @@ async def check_message_and_create_log_if_message_is_bad(
         text: str,
         db: DB,
         chat: Chat) -> bool:
+    if chat.moderation_level == ChatModerationLevelEnum.off.value:
+        return False
+
     is_bad = is_bad_text(text)
 
-    if is_bad and chat.moderation_level != 0:
+    if is_bad:
         await create_bad_message_log(
             db=db,
             chat_id=chat_id,
