@@ -4,6 +4,8 @@ import os
 import time
 from typing import Sequence
 
+import aiofiles
+
 from src.models import Log
 from src.repo import DB
 
@@ -32,8 +34,8 @@ async def create_log_file(chat_id: int,
 
     filename = f'file_for_log{time.time()}.txt'
 
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(logs_text)
+    async with aiofiles.open(filename, 'w', encoding='utf-8') as f:
+        await f.write(logs_text)
 
     return True, filename
 
