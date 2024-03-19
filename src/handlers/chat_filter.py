@@ -7,6 +7,6 @@ router: Router = Router()
 
 
 @router.message(F.chat.type != 'private')
-async def on_admin_change(message: types.Message, db: DB, bot: Bot) -> None:
+async def chats_messages(message: types.Message, db: DB, bot: Bot) -> None:
     chat = await update_chat_info(message, db, bot)
     await delete_bad_message(message, db, chat)
