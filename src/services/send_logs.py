@@ -13,7 +13,7 @@ from src.repo import DB
 def process_logs(logs: Sequence[Log]) -> str:
     logs_text = ''
     for log in logs:
-        logs_text += f'{log.chat_name} | {log.user_name} | {log.message} | {log.time}\n'
+        logs_text += f'{log.chat_name} | {log.user_name} | {log.user_id} | {log.message} | {log.time}\n'
     return logs_text
 
 
