@@ -11,10 +11,9 @@ from src.repo import DB
 
 
 def process_logs(logs: Sequence[Log]) -> str:
-    logs_text = ''
-    for log in logs:
-        logs_text += f'{log.chat_name} | {log.user_name} | {log.user_id} | {log.message} | {log.time}\n'
-    return logs_text
+    return '\n'.join(
+        f'{log.chat_name} | {log.user_name} | {log.user_id} | {log.message} | {log.time}' for log in logs
+    )
 
 
 async def create_log_file(chat_id: int,
