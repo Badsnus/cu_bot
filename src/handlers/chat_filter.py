@@ -26,7 +26,7 @@ async def chats_messages(message: types.Message, db: DB, bot: Bot) -> None:
         user_id=message.from_user.id,
         time=message.date,
         is_from_bot=bool(message.via_bot),
-        text=message.text,
+        text=message.text or message.caption or '',
         db=db,
         chat=chat,
     )
