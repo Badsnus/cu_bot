@@ -1,7 +1,7 @@
 from aiogram import F, Router
 from aiogram.types import Message
 
-from src.keyboards.chats import (
+from src.keyboards.chats_list import (
     get_show_chats_keyboard,
 )
 from src.repo import DB

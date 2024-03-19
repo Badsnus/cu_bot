@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.types import CallbackQuery, FSInputFile
 
-from src.keyboards.chats import (
+from src.keyboards.chats_list import (
     GetLogsCallback,
 )
 from src.repo import DB
