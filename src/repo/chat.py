@@ -1,6 +1,5 @@
 from typing import Sequence
 
-from aiogram import Bot
 from aiogram.types import ChatMemberAdministrator
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,7 +29,7 @@ class ChatRepo:
 
         return chat
 
-    async def get_by_tg_id(self, telegram_id: int) -> Chat | None:
+    async def get(self, telegram_id: int) -> Chat | None:
         return await self.session.scalar(
             select(Chat).where(Chat.telegram_id == telegram_id)
         )
@@ -46,7 +45,7 @@ class ChatRepo:
     async def update_moder_level(self, chat_id: int) -> Chat:
         # костыль так как пока что включенная модерация - это больше нуля
         # а по дефолту стоит 100 - это типа минимальная планка отсева должна быть
-        chat = await self.get_by_tg_id(chat_id)
+        chat = await self.get(chat_id)
         chat.moderation_level = 100 - chat.moderation_level
 
         self.session.add(chat)

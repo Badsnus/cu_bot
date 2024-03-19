@@ -20,7 +20,7 @@ def process_logs(logs: Sequence[Log]) -> str:
 async def create_log_file(chat_id: int,
                           user_id: int,
                           db: DB) -> tuple[bool, str]:
-    logs = await db.log.get_logs(user_id, chat_id)
+    logs = await db.log.get_list(user_id, chat_id)
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         logs_text = await asyncio.get_event_loop().run_in_executor(

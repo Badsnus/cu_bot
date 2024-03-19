@@ -9,7 +9,7 @@ class UserRepo:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def get_by_tg_id(self, telegram_id: int) -> User | None:
+    async def get(self, telegram_id: int) -> User | None:
         return await self.session.scalar(
             select(User).where(User.telegram_id == telegram_id)
         )

@@ -15,7 +15,7 @@ async def _get_text_and_keyboard(chat: Chat) -> tuple[str, InlineKeyboardMarkup]
 
 async def get_chat_settings_text_and_keyboard(chat_id: int,
                                               db: DB) -> tuple[str, InlineKeyboardMarkup]:
-    chat = await db.chat.get_by_tg_id(chat_id)
+    chat = await db.chat.get(chat_id)
     return await _get_text_and_keyboard(chat)
 
 
