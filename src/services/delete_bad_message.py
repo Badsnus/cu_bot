@@ -1,6 +1,5 @@
 import re
-
-from aiogram.types import Message
+from datetime import datetime
 
 from src.models import Chat
 from src.repo import DB
@@ -14,34 +13,57 @@ def is_bad_text(text: str) -> bool:
     return bool(words & bad_words)
 
 
-def is_from_bot(message: Message) -> bool:
-    return bool(message.via_bot)
+async def create_bad_message_log(db: DB,
+                                 chat_id: int,
+                                 chat_name: str,
+                                 user_name: str,
+                                 user_id: int,
+                                 time: datetime,
+                                 text: str) -> None:
+    await db.log.create(
+        chat_id=chat_id,
+        user_id=user_id,
+        message=text,
+        time=time,
+        chat_name=chat_name,
+        user_name=user_name,
+    )
 
 
-async def delete_message_and_create_log(db: DB, message: Message, text: str) -> None:
-    try:
-        await message.delete()
-
-        await db.log.create(
-            chat_id=message.chat.id,
-            user_id=message.from_user.id,
-            message=text,
-            time=message.date,
-            chat_name=message.chat.title,
-            user_name=message.from_user.username,
-        )
-    except:
-        # todo ошибку надо обработать
-        pass
-
-
-async def delete_bad_message(message: Message, db: DB, chat: Chat) -> None:
-    text = message.text or message.caption or ''
-
+async def create_log_if_message_is_bad(
+        chat_id: int,
+        chat_name: str,
+        user_name: str,
+        user_id: int,
+        time: datetime,
+        is_from_bot: bool,
+        text: str,
+        db: DB,
+        chat: Chat) -> bool:
     is_bad = is_bad_text(text)
 
     if is_bad and chat.moderation_level != 0:
-        await delete_message_and_create_log(db, message, text)
+        await create_bad_message_log(
+            db=db,
+            chat_id=chat_id,
+            chat_name=chat_name,
+            user_name=user_name,
+            user_id=user_id,
+            time=time,
+            text=text,
+        )
+        return True
 
-    if is_from_bot(message):
-        await delete_message_and_create_log(db, message, 'создано ботом')
+    if is_from_bot:
+        await create_bad_message_log(
+            db=db,
+            chat_id=chat_id,
+            chat_name=chat_name,
+            user_name=user_name,
+            user_id=user_id,
+            time=time,
+            text='[SERVICE] Создано с помощью бота',
+        )
+        return True
+
+    return False

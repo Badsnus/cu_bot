@@ -29,7 +29,7 @@ async def create_chat_member_log(message: Message, db: DB, join: bool, bot: Bot)
 
     try:
         await message.delete()
-        await update_chat_info(message, db, bot)
+        await update_chat_info(message, db, bot, await bot.get_chat_administrators(message.chat.id))
 
         await db.log.create(
             chat_id=message.chat.id,
