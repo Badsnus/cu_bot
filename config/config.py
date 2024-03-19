@@ -23,3 +23,8 @@ def load_config() -> Config:
         tg_bot=TelegramBotConfig(token=getenv('BOT_TOKEN')),
         db_connection=getenv('db_connection'),
     )
+
+
+def load_test_database_url() -> str:
+    load_dotenv()
+    return getenv('test_db_connection')
