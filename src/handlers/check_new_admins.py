@@ -1,18 +1,19 @@
-from aiogram import Bot, Router
+from aiogram import Router
 from aiogram.enums import ChatMemberStatus
 from aiogram.types import ChatMemberUpdated
 
 from src.repo import DB
+from src.services import update_admin_status
 
 router: Router = Router()
 
 
 @router.chat_member()
-async def edit_admins(chat_member_updated: ChatMemberUpdated, db: DB) -> None:
-    old = chat_member_updated.old_chat_member
-    new = chat_member_updated.new_chat_member
-
-    if old.status == ChatMemberStatus.MEMBER and new.status == ChatMemberStatus.ADMINISTRATOR:
-        await db.chat.add_admin(new.user.id, chat_member_updated.chat.id)
-    elif old.status == ChatMemberStatus.ADMINISTRATOR and new.status != ChatMemberStatus.ADMINISTRATOR:
-        await db.chat.delete_admin(new.user.id, chat_member_updated.chat.id)
+async def edit_admins(update: ChatMemberUpdated, db: DB) -> None:
+    await update_admin_status(
+        user_id=update.new_chat_member.user.id,
+        chat_id=update.chat.id,
+        old_status=update.old_chat_member.status,
+        new_status=update.new_chat_member.status,
+        db=db,
+    )
