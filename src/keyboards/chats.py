@@ -14,7 +14,7 @@ class GetLogsCallback(CallbackData, prefix='group_logs'):
     id: int = -1
 
 
-async def get_show_groups_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup:
+async def get_show_chats_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     chats = await db.chat.get_chats_by_user(user_id)
