@@ -1,5 +1,4 @@
 from aiogram import Router
-from aiogram.enums import ChatMemberStatus
 from aiogram.types import ChatMemberUpdated
 
 from src.repo import DB
