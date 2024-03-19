@@ -36,12 +36,13 @@ class LogRepo:
         return log
 
     async def get_logs(self, user_id: int, chat_id: int, days: int = 7) -> Sequence[Log]:
+        from_time = datetime.now() - timedelta(days=days)
 
         query = (
             select(Log)
             .join(UserChat, Log.chat_id == UserChat.chat_id)
             .where(UserChat.user_id == user_id)
-            .where(Log.time + timedelta(days=days) > datetime.now())
+            .where(Log.time >= from_time)
         )
 
         if chat_id != -1:

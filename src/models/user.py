@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    BigInteger, Column, Integer,
+    BigInteger, Column,
 )
 
 from src.models import Base
@@ -8,5 +8,4 @@ from src.models import Base
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer(), primary_key=True)
-    telegram_id = Column(BigInteger(), unique=True, index=True)
+    telegram_id = Column(BigInteger(), unique=True, index=True, primary_key=True, autoincrement=False)

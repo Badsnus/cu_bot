@@ -8,8 +8,7 @@ from src.models import Base
 class Chat(Base):
     __tablename__ = 'chats'
 
-    id = Column(Integer(), primary_key=True)
-    telegram_id = Column(BigInteger(), unique=True, index=True)
+    telegram_id = Column(BigInteger(), unique=True, index=True, primary_key=True, autoincrement=False)
 
     chat_name = Column(String(130))
 
