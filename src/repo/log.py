@@ -35,7 +35,10 @@ class LogRepo:
 
         return log
 
-    async def get_list(self, user_id: int, chat_id: int | None, days: int = 7) -> Sequence[Log]:
+    async def get_list(self,
+                       user_id: int,
+                       chat_id: int | None,
+                       days: int = 7) -> Sequence[Log]:
         from_time = datetime.now() - timedelta(days=days)
 
         query = (

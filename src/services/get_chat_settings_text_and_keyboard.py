@@ -5,7 +5,8 @@ from src.models import Chat
 from src.repo import DB
 
 
-async def _get_text_and_keyboard(chat: Chat) -> tuple[str, InlineKeyboardMarkup]:
+async def _get_text_and_keyboard(
+        chat: Chat) -> tuple[str, InlineKeyboardMarkup]:
     return (
         f'Чат {chat.chat_name}\n'
         f'Статус модерирования {chat.moderation_level}',
@@ -13,13 +14,15 @@ async def _get_text_and_keyboard(chat: Chat) -> tuple[str, InlineKeyboardMarkup]
     )
 
 
-async def get_chat_settings_text_and_keyboard(chat_id: int,
-                                              db: DB) -> tuple[str, InlineKeyboardMarkup]:
+async def get_chat_settings_text_and_keyboard(
+        chat_id: int,
+        db: DB) -> tuple[str, InlineKeyboardMarkup]:
     chat = await db.chat.get(chat_id)
     return await _get_text_and_keyboard(chat)
 
 
-async def update_chat_settings_and_get_text_and_keyboard(chat_id: int,
-                                                         db: DB) -> tuple[str, InlineKeyboardMarkup]:
+async def update_chat_settings_and_get_text_and_keyboard(
+        chat_id: int,
+        db: DB) -> tuple[str, InlineKeyboardMarkup]:
     chat = await db.chat.update_moder_level(chat_id)
     return await _get_text_and_keyboard(chat)

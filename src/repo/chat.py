@@ -66,7 +66,12 @@ class ChatRepo:
         need_to_add = []
         for admin in admins:
             if admin.user.id != bot_id:
-                need_to_add.append(UserChat(chat_id=chat_id, user_id=admin.user.id))
+                need_to_add.append(
+                    UserChat(
+                        chat_id=chat_id,
+                        user_id=admin.user.id,
+                    ),
+                )
 
         self.session.add_all(need_to_add)
         await self.session.commit()
@@ -80,7 +85,8 @@ class ChatRepo:
 
     async def delete_admin(self, admin_id: int, chat_id: int) -> None:
         await self.session.execute(
-            delete(UserChat).where((UserChat.chat_id == chat_id) & (UserChat.user_id == admin_id))
+            delete(UserChat).where((UserChat.chat_id == chat_id) &
+                                   (UserChat.user_id == admin_id))
         )
         await self.session.commit()
 

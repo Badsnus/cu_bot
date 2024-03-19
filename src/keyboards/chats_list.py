@@ -13,7 +13,8 @@ class GetLogsCallback(CallbackData, prefix='chats_logs'):
     id: int | None = None
 
 
-async def get_show_chats_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup:
+async def get_show_chats_keyboard(user_id: int,
+                                  db: DB) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     chats = await db.chat.get_chats_by_user(user_id)
@@ -24,5 +25,10 @@ async def get_show_chats_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup:
                 callback_data=RetrieveChatCallback(id=chat.telegram_id).pack(),
             ),
         )
-    builder.row(InlineKeyboardButton(text='Выгрузить все логи', callback_data=GetLogsCallback().pack()))
+    builder.row(
+        InlineKeyboardButton(
+            text='Выгрузить все логи',
+            callback_data=GetLogsCallback().pack(),
+        ),
+    )
     return builder.as_markup()

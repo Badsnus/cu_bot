@@ -12,7 +12,9 @@ router: Router = Router()
 
 
 @router.callback_query(GetLogsCallback.filter())
-async def get_logs(call: CallbackQuery, callback_data: GetLogsCallback, db: DB) -> None:
+async def get_logs(call: CallbackQuery,
+                   callback_data: GetLogsCallback,
+                   db: DB) -> None:
     await call.message.edit_text('Готовлю логи')
 
     created, filename = await create_log_file(
@@ -25,5 +27,8 @@ async def get_logs(call: CallbackQuery, callback_data: GetLogsCallback, db: DB) 
         await call.message.edit_text('Логов нет(')
         return
 
-    await call.message.answer_document(document=FSInputFile(filename), caption='вот твои логи')
+    await call.message.answer_document(
+        document=FSInputFile(filename),
+        caption='вот твои логи',
+    )
     delete_file(filename)

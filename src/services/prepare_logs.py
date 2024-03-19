@@ -12,7 +12,8 @@ from src.repo import DB
 
 def process_logs(logs: Sequence[Log]) -> str:
     return '\n'.join(
-        f'{log.chat_name} | {log.user_name} | {log.user_id} | {log.message} | {log.time}' for log in logs
+        f'{log.chat_name} | {log.user_name} | {log.user_id} | '
+        f'{log.message} | {log.time}' for log in logs
     )
 
 
@@ -42,5 +43,5 @@ async def create_log_file(chat_id: int,
 def delete_file(filename: str) -> None:
     try:
         os.remove(filename)
-    except:
+    except Exception:
         pass

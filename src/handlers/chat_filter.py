@@ -1,7 +1,10 @@
 from aiogram import Bot, F, Router, types
 
 from src.repo import DB
-from src.services import check_message_and_create_log_if_message_is_bad, update_chat_info
+from src.services import (
+    check_message_and_create_log_if_message_is_bad,
+    update_chat_info,
+)
 
 router: Router = Router()
 
@@ -31,5 +34,5 @@ async def chats_messages(message: types.Message, db: DB, bot: Bot) -> None:
     if is_deleted:
         try:
             await message.delete()
-        except:
+        except Exception:
             pass

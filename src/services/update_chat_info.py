@@ -1,5 +1,4 @@
-from aiogram import Bot
-from aiogram.types import ChatMemberAdministrator, Message
+from aiogram.types import ChatMemberAdministrator
 
 from src.models import Chat
 from src.repo import DB

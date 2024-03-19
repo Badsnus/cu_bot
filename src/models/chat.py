@@ -15,11 +15,22 @@ class ChatModerationLevelEnum(Enum):
 class Chat(Base):
     __tablename__ = 'chats'
 
-    telegram_id = Column(BigInteger(), unique=True, index=True, primary_key=True, autoincrement=False)
+    telegram_id = Column(
+        BigInteger(),
+        unique=True,
+        index=True,
+        primary_key=True,
+        autoincrement=False,
+    )
 
-    chat_name = Column(String(130))
+    chat_name = Column(
+        String(130),
+    )
 
-    moderation_level = Column(String(10), default=ChatModerationLevelEnum.on)
+    moderation_level = Column(
+        String(10),
+        default=ChatModerationLevelEnum.on,
+    )
 
 
 class UserChat(Base):

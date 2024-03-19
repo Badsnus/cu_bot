@@ -28,7 +28,8 @@ async def create_member_leave_log(chat_id: int,
                                   from_user_id: int,
                                   from_user_username: str,
                                   db: DB) -> None:
-    text = 'user leave' if member_user_id == from_user_id else f'user kicked by {from_user_username}'
+    text = ('user leave' if member_user_id == from_user_id
+            else f'user kicked by {from_user_username}')
 
     await create_chat_member_log(
         chat_id=chat_id,
@@ -49,7 +50,8 @@ async def create_member_join_log(chat_id: int,
                                  from_user_id: int,
                                  from_user_username: str,
                                  db: DB) -> None:
-    text = 'user join' if member_user_id == from_user_id else f'user added by {from_user_username}'
+    text = ('user join' if member_user_id == from_user_id
+            else f'user added by {from_user_username}')
 
     await create_chat_member_log(
         chat_id=chat_id,

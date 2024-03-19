@@ -3,13 +3,19 @@ from aiogram.types import Message
 
 from src.repo import DB
 from src.services import update_chat_info
-from src.services.check_is_bot_kicked_and_create_log import check_is_bot_kicked_and_create_log
-from src.services.create_service_notig_log import create_member_join_log
+from src.services.check_is_bot_kicked_and_create_log import (
+    check_is_bot_kicked_and_create_log,
+)
+from src.services.create_service_notig_log import (
+    create_member_join_log,
+)
 
 router: Router = Router()
 
 
-async def update_chat_info_and_delete_message(message: Message, db: DB, bot: Bot) -> None:
+async def update_chat_info_and_delete_message(message: Message,
+                                              db: DB,
+                                              bot: Bot) -> None:
     await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
@@ -20,7 +26,7 @@ async def update_chat_info_and_delete_message(message: Message, db: DB, bot: Bot
 
     try:
         await message.delete()
-    except:
+    except Exception:
         pass
 
 
