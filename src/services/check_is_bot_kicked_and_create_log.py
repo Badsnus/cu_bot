@@ -4,15 +4,17 @@ from src.repo import DB
 from src.services.create_service_notig_log import create_member_leave_log
 
 
-async def check_is_bot_kicked_and_create_log(member_user_id: int,
-                                             member_user_name: str,
-                                             bot_id: int,
-                                             chat_id: int,
-                                             chat_name: str,
-                                             message_time: datetime,
-                                             from_user_id: int,
-                                             from_user_username: str,
-                                             db: DB) -> None:
+async def check_is_bot_kicked_or_member_and_create_log(
+        member_user_id: int,
+        member_user_name: str,
+        bot_id: int,
+        chat_id: int,
+        chat_name: str,
+        message_time: datetime,
+        from_user_id: int,
+        from_user_username: str,
+        db: DB) -> None:
+
     if member_user_id == bot_id:
         await db.chat.delete(chat_id)
         return
