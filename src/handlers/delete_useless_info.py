@@ -3,7 +3,7 @@ from aiogram.types import Message
 
 from src.repo import DB
 from src.services import update_chat_info
-from src.services.check_is_bot_kicked_and_create_log import (
+from src.services.check_is_bot_kicked_or_member_and_create_log import (
     check_is_bot_kicked_or_member_and_create_log,
 )
 from src.services.create_service_notig_log import (
