@@ -24,9 +24,9 @@ async def main():
 
     config: Config = load_config()
 
-    engine = create_async_engine(url=config.db_connection, echo=True)
-    sessionmaker = async_sessionmaker(engine, expire_on_commit=False)
-    async with engine.begin() as conn:
+    db_engine = create_async_engine(url=config.db_connection, echo=True)
+    db_session_maker = async_sessionmaker(db_engine, expire_on_commit=False)
+    async with db_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
     bot: Bot = Bot(
@@ -36,7 +36,7 @@ async def main():
     dp: Dispatcher = Dispatcher()
 
     dp.include_routers(*routers)
-    dp.update.middleware(DbSessionMiddleware(session_pool=sessionmaker))
+    dp.update.middleware(DbSessionMiddleware(session_pool=db_session_maker))
 
     await bot.delete_webhook(drop_pending_updates=False)
     await dp.start_polling(bot)
