@@ -57,11 +57,11 @@ class ChatRepo:
     async def add_admins(self,
                          admins: list[ChatMemberAdministrator],
                          chat_id: int,
-                         bot: Bot) -> None:
+                         bot_id: int) -> None:
 
         need_to_add = []
         for admin in admins:
-            if admin.user.id != bot.id:
+            if admin.user.id != bot_id:
                 need_to_add.append(UserChat(chat_id=chat_id, user_id=admin.user.id))
 
         self.session.add_all(need_to_add)
