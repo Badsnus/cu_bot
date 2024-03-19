@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    BigInteger, Column, Integer, DateTime, String,
+    BigInteger, Column, DateTime, Integer, String,
 )
 
 from src.models import Base

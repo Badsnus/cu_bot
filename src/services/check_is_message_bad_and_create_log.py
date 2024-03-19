@@ -1,5 +1,5 @@
-import re
 from datetime import datetime
+from re import findall
 
 from src.models import Chat, ChatModerationLevelEnum
 from src.repo import DB
@@ -9,7 +9,7 @@ bad_words = set(open('bad_words.txt', encoding='utf-8').read().splitlines())
 
 
 def is_bad_text(text: str) -> bool:
-    words = set(re.findall(r'\w+', text))
+    words = set(findall(r'\w+', text))
     return bool(bad_words & words)
 
 
