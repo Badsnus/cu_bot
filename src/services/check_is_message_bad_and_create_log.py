@@ -10,7 +10,7 @@ bad_words = set(open('bad_words.txt', encoding='utf-8').read().splitlines())
 
 def is_bad_text(text: str) -> bool:
     words = set(re.findall(r'\w+', text))
-    return bool(words & bad_words)
+    return bool(bad_words & words)
 
 
 async def create_bad_message_log(db: DB,
