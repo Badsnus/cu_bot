@@ -34,7 +34,7 @@ async def create_chat_member_log(message: Message, db: DB, join: bool, bot: Bot)
         await db.log.create(
             chat_id=message.chat.id,
             user_id=user_id,
-            message=text,
+            message='[ServiceMessage]' + text,
             time=message.date,
             chat_name=message.chat.title,
             user_name=user_name,
