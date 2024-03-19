@@ -35,7 +35,7 @@ class LogRepo:
 
         return log
 
-    async def get_logs(self, user_id: int, chat_id: int, days: int = 7) -> Sequence[Log]:
+    async def get_logs(self, user_id: int, chat_id: int | None, days: int = 7) -> Sequence[Log]:
         from_time = datetime.now() - timedelta(days=days)
 
         query = (
@@ -45,7 +45,7 @@ class LogRepo:
             .where(Log.time >= from_time)
         )
 
-        if chat_id != -1:
+        if chat_id is not None:
             query = query.where(Log.chat_id == chat_id)
 
         return (await self.session.scalars(query)).all()

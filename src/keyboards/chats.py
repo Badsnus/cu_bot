@@ -11,7 +11,7 @@ class RetrieveGroupCallback(CallbackData, prefix='group_retrieve'):
 
 
 class GetLogsCallback(CallbackData, prefix='group_logs'):
-    id: int = -1
+    id: int | None = None
 
 
 async def get_show_chats_keyboard(user_id: int, db: DB) -> InlineKeyboardMarkup:
