@@ -2,11 +2,9 @@ from re import findall
 
 from src.models import Chat, ChatModerationLevelEnum
 
-# todo офк надо отсюда вынести
-bad_words = set(open('bad_words.txt', encoding='utf-8').read().splitlines())
-
 
 class IsMessageGood:
+    bad_words: set = set()
 
     def __init__(self, chat: Chat, text: str, is_from_bot: bool) -> None:
         self._chat = chat
@@ -15,7 +13,8 @@ class IsMessageGood:
 
     def _is_bad_text(self) -> bool:
         words = set(findall(r'\w+', self._text))
-        return bool(bad_words & words)
+        print(self.bad_words)
+        return bool(self.bad_words & words)
 
     def check(self) -> bool:
         if self._chat.moderation_level == ChatModerationLevelEnum.off.value:
