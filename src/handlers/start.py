@@ -1,4 +1,5 @@
 from aiogram import F, Router
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from src.keyboards import get_main_menu
@@ -8,7 +9,9 @@ router: Router = Router()
 
 
 @router.message((F.text == '/start') & (F.chat.type == 'private'))
-async def start_handler(message: Message) -> None:
+async def start_handler(message: Message, state: FSMContext) -> None:
+    await state.clear()
+
     user = await get_or_create_user(
         user_id=message.from_user.id,
     )
