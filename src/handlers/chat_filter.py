@@ -1,6 +1,5 @@
 from aiogram import Bot, F, Router, types
 
-from src.repo import DB
 from src.services import (
     create_bad_message_log,
     IsMessageGood,
@@ -12,13 +11,12 @@ router: Router = Router()
 
 
 @router.message(F.chat.type != 'private')
-async def chats_messages(message: types.Message, db: DB, bot: Bot) -> None:
+async def chats_messages(message: types.Message, bot: Bot) -> None:
     chat = await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
         admins=await bot.get_chat_administrators(message.chat.id),
         bot_id=bot.id,
-        db=db,
     )
 
     text = message.text or message.caption or ''

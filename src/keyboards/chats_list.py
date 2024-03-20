@@ -2,7 +2,7 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from src.repo import DB
+from src.services.get_db import get_db
 
 
 class RetrieveChatCallback(CallbackData, prefix='chat_retrieve'):
@@ -13,8 +13,8 @@ class GetLogsCallback(CallbackData, prefix='chats_logs'):
     id: int | None = None
 
 
-async def get_show_chats_keyboard(user_id: int,
-                                  db: DB) -> InlineKeyboardMarkup:
+async def get_show_chats_keyboard(user_id: int) -> InlineKeyboardMarkup:
+    db = await get_db()
     builder = InlineKeyboardBuilder()
 
     chats = await db.chat.get_chats_by_user(user_id)

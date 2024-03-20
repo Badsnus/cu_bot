@@ -1,8 +1,11 @@
 from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from src.keyboards.chats_list import GetLogsCallback
 from src.models import Chat, ChatModerationLevelEnum
+
+
+class GetLogsCallback(CallbackData, prefix='chats_logs'):
+    id: int
 
 
 class ChangeModerLevelCallback(CallbackData, prefix='change_moder_level'):
