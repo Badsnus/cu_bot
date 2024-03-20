@@ -3,19 +3,15 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from config import Config, load_config
 from src.handlers import routers
 from src.middlewares import DbSessionMiddleware
-from src.models import Base
+from src.models import Base, db_engine, db_session_maker
 
 logger = logging.getLogger(__name__)
 
 config: Config = load_config()
-
-db_engine = create_async_engine(url=config.db_connection, echo=True)
-db_session_maker = async_sessionmaker(db_engine, expire_on_commit=False)
 
 
 async def main():
