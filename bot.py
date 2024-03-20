@@ -8,7 +8,7 @@ from config import Config, load_config
 from src.handlers import routers
 from src.middlewares import DbSessionMiddleware
 from src.models import Base, db_engine, db_session_maker
-from src.services import get_db, IsMessageGood
+from src.services import get_db, MessageChecker
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ async def main():
         await conn.run_sync(Base.metadata.create_all)
 
     db = await get_db.get_db()
-    IsMessageGood.bad_words = {x.word for x in await db.word.get_list()}
+    MessageChecker.bad_words = {x.word for x in await db.word.get_list()}
 
     bot: Bot = Bot(
         token=config.tg_bot.token,

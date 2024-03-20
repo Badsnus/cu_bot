@@ -3,7 +3,7 @@ from re import findall
 from src.models import Chat, ChatModerationLevelEnum
 
 
-class IsMessageGood:
+class MessageChecker:
     bad_words: set = set()
 
     def __init__(self, chat: Chat, text: str, is_from_bot: bool) -> None:

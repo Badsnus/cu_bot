@@ -3,7 +3,7 @@ from aiogram import Bot, F, Router, types
 from src.services import (
     check_is_message_from_bot,
     create_bad_message_log,
-    IsMessageGood,
+    MessageChecker,
     update_chat_info,
 )
 
@@ -23,7 +23,7 @@ async def chats_messages(message: types.Message, bot: Bot) -> None:
 
     is_message_from_bot = await check_is_message_from_bot(message.via_bot)
 
-    is_good = IsMessageGood(
+    is_good = MessageChecker(
         chat=chat,
         text=text,
         is_from_bot=is_message_from_bot,
