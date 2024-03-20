@@ -1,13 +1,14 @@
 from aiogram.enums import ChatMemberStatus
 
-from src.repo import DB
+from src.services.get_db import get_db
 
 
 async def update_admin_status(user_id: int,
                               chat_id: int,
                               old_status: str,
-                              new_status: str,
-                              db: DB) -> None:
+                              new_status: str) -> None:
+    db = await get_db()
+
     mem = ChatMemberStatus.MEMBER
     adm = ChatMemberStatus.ADMINISTRATOR
 
