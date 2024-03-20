@@ -3,7 +3,7 @@ from aiogram import Bot, F, Router, types
 from src.repo import DB
 from src.services import (
     create_bad_message_log,
-    check_is_message_good,
+    IsMessageGood,
     check_is_message_from_bot,
     update_chat_info,
 )
@@ -25,11 +25,11 @@ async def chats_messages(message: types.Message, db: DB, bot: Bot) -> None:
 
     is_message_from_bot = await check_is_message_from_bot(message.via_bot)
 
-    is_good = await check_is_message_good(
+    is_good = IsMessageGood(
         chat=chat,
         text=text,
         is_from_bot=is_message_from_bot,
-    )
+    ).check()
 
     if is_good:
         return

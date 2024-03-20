@@ -1,4 +1,4 @@
-from .check_is_message_good import check_is_message_good
+from .check_is_message_good import IsMessageGood
 from .check_is_message_from_bot import check_is_message_from_bot
 from .create_bad_message_log import create_bad_message_log
 from .prepare_logs import create_log_file

@@ -11,6 +11,7 @@ async def create_bad_message_log(chat_id: int,
                                  text: str,
                                  is_from_bot) -> None:
     db = await get_db()
+
     await db.log.create(
         chat_id=chat_id,
         user_id=user_id,

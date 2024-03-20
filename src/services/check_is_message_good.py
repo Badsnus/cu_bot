@@ -6,15 +6,19 @@ from src.models import Chat, ChatModerationLevelEnum
 bad_words = set(open('bad_words.txt', encoding='utf-8').read().splitlines())
 
 
-def is_bad_text(text: str) -> bool:
-    words = set(findall(r'\w+', text.lower()))
-    return bool(bad_words & words)
+class IsMessageGood:
 
+    def __init__(self, chat: Chat, text: str, is_from_bot: bool) -> None:
+        self._chat = chat
+        self._text = text.lower()
+        self._is_from_bot = is_from_bot
 
-async def check_is_message_good(chat: Chat,
-                                text: str,
-                                is_from_bot: bool) -> bool:
-    if chat.moderation_level == ChatModerationLevelEnum.off.value:
-        return True
+    def _is_bad_text(self) -> bool:
+        words = set(findall(r'\w+', self._text))
+        return bool(bad_words & words)
 
-    return not (is_bad_text(text) or is_from_bot)
+    def check(self) -> bool:
+        if self._chat.moderation_level == ChatModerationLevelEnum.off.value:
+            return True
+
+        return not (self._is_bad_text() or self._is_from_bot)
