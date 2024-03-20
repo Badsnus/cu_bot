@@ -10,3 +10,4 @@ from .get_chat_settings_text_and_keyboard import (
 from .get_or_create_user import get_or_create_user
 from .create_service_message_log import ServiceMessageLogger
 from .delete_chat import delete_chat
+from .create_word import create_word
