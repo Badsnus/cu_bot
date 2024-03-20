@@ -18,4 +18,4 @@ routers = [
     chat_settings_router,
     chat_send_logs_router,
     chat_update_moderation_router,
-]  # ne menyat poryadok
+]  # don`t change order!

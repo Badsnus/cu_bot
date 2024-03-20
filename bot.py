@@ -12,6 +12,11 @@ from src.models import Base
 
 logger = logging.getLogger(__name__)
 
+config: Config = load_config()
+
+db_engine = create_async_engine(url=config.db_connection, echo=True)
+db_session_maker = async_sessionmaker(db_engine, expire_on_commit=False)
+
 
 async def main():
     logging.basicConfig(
@@ -22,10 +27,6 @@ async def main():
 
     logger.info('Starting bot')
 
-    config: Config = load_config()
-
-    db_engine = create_async_engine(url=config.db_connection, echo=True)
-    db_session_maker = async_sessionmaker(db_engine, expire_on_commit=False)
     async with db_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
