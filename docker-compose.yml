@@ -7,4 +7,12 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    command: ["python", "./bot.py"]
+    command: [ "python", "./bot.py" ]
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+    command: [ "redis-server", "--appendonly", "yes" ]
