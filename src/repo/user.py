@@ -14,8 +14,11 @@ class UserRepo:
             select(User).where(User.telegram_id == telegram_id)
         )
 
-    async def create(self, telegram_id: int, commit=True) -> User:
-        user = User(telegram_id=telegram_id)
+    async def create(self,
+                     telegram_id: int,
+                     is_admin: bool = False,
+                     commit=True) -> User:
+        user = User(telegram_id=telegram_id, is_admin=is_admin)
 
         self.session.add(user)
         if commit:

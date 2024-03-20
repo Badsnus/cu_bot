@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    BigInteger, Column,
+    BigInteger, Boolean, Column,
 )
 
 from src.models import Base
@@ -14,4 +14,9 @@ class User(Base):
         index=True,
         primary_key=True,
         autoincrement=False,
+    )
+
+    is_admin = Column(
+        Boolean(),
+        default=False,
     )
