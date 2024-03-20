@@ -133,6 +133,7 @@ class Tester:
                 print(f'{method_name} - exception', ex)
                 raise ex
 
+
 if __name__ == '__main__':
     tester = Tester()
     asyncio.run(tester.run())
