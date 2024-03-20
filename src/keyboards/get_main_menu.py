@@ -9,7 +9,10 @@ def get_main_menu(is_admin: bool) -> ReplyKeyboardMarkup:
                          KeyboardButton(text='Добавленные чаты'),
                      ],
                  ] + [
-                     [KeyboardButton(text='Добавить слово')] if is_admin
+                     [
+                         KeyboardButton(text='Добавить слово'),
+                         KeyboardButton(text='Удалить слово'),
+                     ] if is_admin
                      else []
                  ]
     )

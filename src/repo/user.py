@@ -11,7 +11,7 @@ class UserRepo:
 
     async def get(self, telegram_id: int) -> User | None:
         return await self.session.scalar(
-            select(User).where(User.telegram_id == telegram_id)
+            select(User).where(User.telegram_id == telegram_id),
         )
 
     async def create(self,

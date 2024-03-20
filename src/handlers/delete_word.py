@@ -3,24 +3,24 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from src.keyboards import word_back_menu, get_main_menu
-from src.services import create_word, get_or_create_user
-from src.states import AddWordState
+from src.services import delete_word, get_or_create_user
+from src.states import DeleteWordState
 
 router: Router = Router()
 
 
-@router.message((F.text == 'Добавить слово') & (F.chat.type == 'private'))
+@router.message((F.text == 'Удалить слово') & (F.chat.type == 'private'))
 async def ask_word(message: Message, state: FSMContext) -> None:
     await message.answer(
-        'Напиши слово для добавление',
+        'Напиши слово для удаления',
         reply_markup=word_back_menu,
     )
 
-    await state.set_state(AddWordState.word)
+    await state.set_state(DeleteWordState.word)
 
 
-@router.message(AddWordState.word)
-async def add_word(message: Message, state: FSMContext) -> None:
+@router.message(DeleteWordState.word)
+async def delete_world_handler(message: Message, state: FSMContext) -> None:
     await state.clear()
 
     user = await get_or_create_user(
@@ -32,14 +32,16 @@ async def add_word(message: Message, state: FSMContext) -> None:
 
     if message.text == 'Отмена':
         await message.answer(
-            'Не добавляю',
+            'Ничего не удалил',
             reply_markup=get_main_menu(user.is_admin),
         )
         return
 
-    await create_word(message.text)
+    is_deleted = await delete_word(message.text)
+
+    text = 'Слово удалено' if is_deleted else 'Такого слова нет в бд'
 
     await message.answer(
-        'Слово добавлено',
+        text,
         reply_markup=get_main_menu(user.is_admin),
     )

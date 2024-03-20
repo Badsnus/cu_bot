@@ -9,6 +9,7 @@ from .update_chat_moderation_level import (
     router as chat_update_moderation_router
 )
 from .add_word import router as add_word_router
+from .delete_word import router as delete_word_router
 
 routers = [
     start_router,
@@ -19,5 +20,6 @@ routers = [
     chat_settings_router,
     send_chats_logs_router,
     chat_update_moderation_router,
-    add_word_router
+    add_word_router,
+    delete_word_router,
 ]  # don`t change order!
