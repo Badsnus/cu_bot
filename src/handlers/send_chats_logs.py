@@ -2,7 +2,6 @@ from aiogram import Router
 from aiogram.types import CallbackQuery, FSInputFile
 
 from src.keyboards.chats_list import GetLogsCallback
-
 from src.services import LogsFile
 
 router: Router = Router()

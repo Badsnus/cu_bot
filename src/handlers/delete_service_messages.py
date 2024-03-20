@@ -1,7 +1,7 @@
 from aiogram import Bot, F, Router
 from aiogram.types import Message
 
-from src.services import delete_chat, update_chat_info, ServiceMessageLogger
+from src.services import delete_chat, ServiceMessageLogger, update_chat_info
 
 router: Router = Router()
 

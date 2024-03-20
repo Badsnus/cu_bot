@@ -1,9 +1,9 @@
 from aiogram import Bot, F, Router, types
 
 from src.services import (
+    check_is_message_from_bot,
     create_bad_message_log,
     IsMessageGood,
-    check_is_message_from_bot,
     update_chat_info,
 )
 
