@@ -13,7 +13,6 @@ class IsMessageGood:
 
     def _is_bad_text(self) -> bool:
         words = set(findall(r'\w+', self._text))
-        print(self.bad_words)
         return bool(self.bad_words & words)
 
     def check(self) -> bool:
