@@ -3,7 +3,7 @@ import asyncio
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from config.config import load_test_database_url
-from src.models import Base, Chat, ChatModerationLevelEnum, Log, User, UserChat
+from src.models import Base, Chat, ChatModerationLevelEnum
 from src.repo import DB
 from src.services import update_chat_info
 
@@ -57,7 +57,7 @@ class Tester:
         chat_clone = await db.chat.get(chat.telegram_id)
         assert chat_clone == chat
 
-        admins = db.chat.get_chats_by_user()
+        # admins = db.chat.get_chats_by_user()
 
     async def run(self):
         for method_name in filter(lambda x: x.startswith('test_'),
