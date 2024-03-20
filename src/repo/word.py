@@ -16,7 +16,7 @@ class WordRepo:
         return (await self.session.scalars(select(Word))).all()
 
     async def create(self, text: str, commit=True) -> Word:
-        MessageChecker.bad_words.add(text)
+        MessageChecker.bad_words.add(text.lower())
         word = Word(word=text.lower())
 
         self.session.add(word)

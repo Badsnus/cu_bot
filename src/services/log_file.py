@@ -7,6 +7,7 @@ from typing import Sequence
 import aiofiles
 
 from src.models import Log
+from src.repo import DB
 from src.services.get_db import get_db
 
 
@@ -33,9 +34,8 @@ class LogFile:
             f'{log.message} | {log.time}' for log in logs
         )
 
-    async def create(self) -> bool:
-        db = await get_db()
-
+    @get_db
+    async def create(self, db: DB) -> bool:
         logs = await db.log.get_list(self._user_id, self._chat_id)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:

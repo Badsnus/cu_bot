@@ -13,8 +13,9 @@ class GetLogsCallback(CallbackData, prefix='chats_logs'):
     id: int | None = None
 
 
-async def get_show_chats_keyboard(user_id: int) -> InlineKeyboardMarkup:
-    db = await get_db()
+@get_db
+async def get_show_chats_keyboard(user_id: int, db) -> InlineKeyboardMarkup:
+    # db without typehint cuz circ import
     builder = InlineKeyboardBuilder()
 
     chats = await db.chat.get_chats_by_user(user_id)

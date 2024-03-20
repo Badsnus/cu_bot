@@ -2,6 +2,7 @@ from aiogram.types import InlineKeyboardMarkup
 
 from src.keyboards.chat_retrieve import get_retrieve_keyboard
 from src.models import Chat
+from src.repo import DB
 from src.services.get_db import get_db
 
 
@@ -19,14 +20,12 @@ class ChatSettingsView:
             await get_retrieve_keyboard(chat)
         )
 
-    async def get(self) -> tuple[str, InlineKeyboardMarkup]:
-        db = await get_db()
-
+    @get_db
+    async def get(self, db: DB) -> tuple[str, InlineKeyboardMarkup]:
         chat = await db.chat.get(self._chat_id)
         return await self._get_text_and_keyboard(chat)
 
-    async def update(self) -> tuple[str, InlineKeyboardMarkup]:
-        db = await get_db()
-
+    @get_db
+    async def update(self, db: DB) -> tuple[str, InlineKeyboardMarkup]:
         chat = await db.chat.update_moder_level(self._chat_id)
         return await self._get_text_and_keyboard(chat)

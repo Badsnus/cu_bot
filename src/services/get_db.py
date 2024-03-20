@@ -2,7 +2,9 @@ from src.models import db_session_maker
 from src.repo import DB
 
 
-async def get_db() -> DB:
-    async with db_session_maker() as session:
-        # sometimes warnings mb need to fix if data will lose
-        return DB(session)
+def get_db(func):
+    async def wrapper(*args, **kwargs):
+        async with db_session_maker() as session:
+            return await func(*args, **kwargs, db=DB(session))
+
+    return wrapper

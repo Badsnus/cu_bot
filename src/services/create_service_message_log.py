@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from src.repo import DB
 from src.services.get_db import get_db
 
 
@@ -33,9 +34,8 @@ class ServiceMessageLogger:
                 if self._member_user_id == self._from_user_id
                 else f'user added by {self._from_user_username}')
 
-    async def __create_log(self, text: str) -> None:
-        db = await get_db()
-
+    @get_db
+    async def __create_log(self, text: str, db: DB) -> None:
         await db.log.create(
             chat_id=self._chat_id,
             user_id=self._member_user_id,
