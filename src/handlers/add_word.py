@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from src.keyboards import add_word_menu, get_main_menu
-from src.services import get_or_create_user, create_word
+from src.services import create_word, get_or_create_user
 from src.states import AddWordState
 
 router: Router = Router()
