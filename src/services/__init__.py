@@ -5,8 +5,7 @@ from .logs_file import LogsFile
 from .update_chat_info import update_chat_info
 from .update_admin_status import update_admin_status
 from .get_chat_settings_text_and_keyboard import (
-    get_chat_settings_text_and_keyboard,
-    update_chat_settings_and_get_text_and_keyboard,
+    ChatSettingsView,
 )
 from .get_or_create_user import get_or_create_user
 from .create_service_message_log import ServiceMessageLogger
