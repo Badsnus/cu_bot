@@ -17,7 +17,7 @@ jobs:
 
     env:
       BOT_TOKEN: "TOKEN"
-      DB_URL: "sqlite:///main.db"
+      db_connection: "sqlite:///main.db"
 
     steps:
       - uses: actions/checkout@v3
