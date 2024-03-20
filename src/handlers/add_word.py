@@ -2,7 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from src.keyboards import word_back_menu, get_main_menu
+from src.keyboards import get_main_menu, word_back_menu
 from src.services import create_word, get_or_create_user
 from src.states import AddWordState
 
