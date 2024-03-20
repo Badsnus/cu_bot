@@ -10,7 +10,7 @@ from src.models import Log
 from src.services.get_db import get_db
 
 
-class LogsFile:
+class LogFile:
 
     def _generate_filename(self) -> str:
         return f'file_for_log{self._user_id}_{time.perf_counter()}.txt'

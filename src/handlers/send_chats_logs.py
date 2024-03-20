@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import CallbackQuery, FSInputFile
 
 from src.keyboards.chats_list import GetLogsCallback
-from src.services import LogsFile
+from src.services import LogFile
 
 router: Router = Router()
 
@@ -12,7 +12,7 @@ async def get_logs(call: CallbackQuery,
                    callback_data: GetLogsCallback) -> None:
     await call.message.edit_text('Готовлю логи')
 
-    logs_file = LogsFile(
+    logs_file = LogFile(
         chat_id=callback_data.id,
         user_id=call.from_user.id,
     )
