@@ -14,6 +14,7 @@ class TelegramBotConfig:
 class Config:
     tg_bot: TelegramBotConfig
     db_connection: str
+    log_files_path: str
 
 
 def load_config() -> Config:
@@ -21,10 +22,6 @@ def load_config() -> Config:
 
     return Config(
         tg_bot=TelegramBotConfig(token=getenv('BOT_TOKEN')),
-        db_connection=getenv('db_connection'),
+        db_connection=getenv('DB_CONNECTION'),
+        log_files_path=getenv('LOG_FILES_PATH')
     )
-
-
-def load_test_database_url() -> str:
-    load_dotenv()
-    return getenv('test_db_connection')

@@ -6,21 +6,27 @@ from typing import Sequence
 
 import aiofiles
 
+from config import load_config
 from src.models import Log
 from src.repo import DB
 from src.services.get_db import get_db
 
 
 class LogFile:
+    __path = None
 
     def _generate_filename(self) -> str:
-        return f'file_for_log{self._user_id}_{time.perf_counter()}.txt'
+        return f'{self.__path}file_for_log{self._user_id}_{time.perf_counter()}.txt'
 
     def __init__(self,
                  chat_id: int,
                  user_id: int) -> None:
         self._user_id = user_id
         self._chat_id = chat_id
+
+        if LogFile.__path is None:
+            LogFile.__path = self.__path = load_config().log_files_path
+
         self._filename = self._generate_filename()
 
     @property
