@@ -17,7 +17,9 @@ async def update_chat_info(chat_id: int,
     if chat is None:
         chat = await db.chat.create(telegram_id=chat_id, chat_name=chat_name)
 
-        admins: list[ChatMemberAdministrator] = await get_admins_method(chat_id)
+        admins: list[ChatMemberAdministrator] = (
+            await get_admins_method(chat_id)
+        )
         await db.chat.add_admins(admins, chat_id, bot_id)
 
     await db.chat.update_name(chat, chat_name)
