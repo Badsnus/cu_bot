@@ -15,7 +15,7 @@ async def chats_messages(message: types.Message, bot: Bot) -> None:
     chat = await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
-        admins=await bot.get_chat_administrators(message.chat.id),
+        get_admins_method=bot.get_chat_administrators,
         bot_id=bot.id,
     )
 

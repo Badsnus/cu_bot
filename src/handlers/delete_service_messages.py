@@ -11,7 +11,7 @@ async def update_chat_info_and_delete_message(message: Message,
     await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
-        admins=await bot.get_chat_administrators(message.chat.id),
+        get_admins_method=bot.get_chat_administrators,
         bot_id=bot.id
     )
 
