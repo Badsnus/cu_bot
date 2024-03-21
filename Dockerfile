@@ -15,5 +15,4 @@ COPY cronjob /etc/cron.d/cronjob
 RUN chmod 0644 /etc/cron.d/cronjob \
     && crontab /etc/cron.d/cronjob
 
-CMD ["cron", "-f"]
-CMD ["python", "./bot.py"]
+CMD ["python", "./start_service.py"]
