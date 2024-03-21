@@ -37,9 +37,11 @@ async def add_word(message: Message, state: FSMContext) -> None:
         )
         return
 
-    await create_word(message.text)
+    is_created = await create_word(message.text)
+
+    text = 'Слово добавлено' if is_created else 'Такое слово уже в бд'
 
     await message.answer(
-        'Слово добавлено',
+        text,
         reply_markup=get_main_menu(user.is_admin),
     )
