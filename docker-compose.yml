@@ -10,3 +10,13 @@ services:
     volumes:
       - /app/main.db:/tmp/cu/main.db
 
+  db_backup:
+    build:
+      context: .
+      dockerfile: db_dumb_Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - /scripts/main.db:/tmp/cu/main.db
+    depends_on:
+      - bot
