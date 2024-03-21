@@ -16,7 +16,8 @@ class LogFile:
     __path = None
 
     def _generate_filename(self) -> str:
-        return f'{self.__path}file_for_log{self._user_id}_{time.perf_counter()}.txt'
+        return (f'{self.__path}file_for_log'
+                f'{self._user_id}_{time.perf_counter()}.txt')
 
     def __init__(self,
                  chat_id: int,
