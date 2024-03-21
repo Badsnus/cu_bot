@@ -1,1 +1,1 @@
-* * * * * python /scripts/db_dumper.py
+0 0 * * * python /scripts/db_dumper.py
