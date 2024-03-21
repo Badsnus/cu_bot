@@ -1,0 +1,1 @@
+0 0 * * * root python /app/db_dumper.py
