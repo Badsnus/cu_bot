@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models import Log, UserChat
@@ -9,7 +9,7 @@ from src.models import Log, UserChat
 
 class LogRepo:
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
     async def create(self,
@@ -52,3 +52,14 @@ class LogRepo:
             query = query.where(Log.chat_id == chat_id)
 
         return (await self.session.scalars(query)).all()
+
+    async def clear_old_logs(self,
+                             days: int = 7) -> None:
+        from_time = datetime.now() - timedelta(days=days)
+
+        query = (
+            delete(Log).where(Log.time < from_time)
+        )
+
+        await self.session.execute(query)
+        await self.session.commit()

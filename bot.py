@@ -7,7 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from config import Config, load_config
 from src.handlers import routers
 from src.models import Base, db_engine
-from src.services import get_db, MessageChecker
+from src.services import clear_old_logs, get_db, MessageChecker
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +28,7 @@ async def main(db) -> None:
         await conn.run_sync(Base.metadata.create_all)
 
     MessageChecker.bad_words = {x.word for x in await db.word.get_list()}
+    asyncio.create_task(clear_old_logs())
 
     bot: Bot = Bot(
         token=config.tg_bot.token,

@@ -12,3 +12,4 @@ from .create_service_message_log import ServiceMessageLogger
 from .delete_chat import delete_chat
 from .create_word import create_word
 from .delete_word import delete_word
+from .clear_db import clear_old_logs
