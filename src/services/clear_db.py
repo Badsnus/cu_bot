@@ -7,12 +7,19 @@ from src.services.get_db import get_db
 
 def get_seconds_need_wait():
     now = datetime.now()
+    day = now
 
-    next_day = now + timedelta(days=1)
+    if now.hour >= 2:
+        day += timedelta(days=1)
 
-    next_day_start = datetime(next_day.year, next_day.month, next_day.day, hour=2)
+    next_event = datetime(
+        year=day.year,
+        month=day.month,
+        day=day.day,
+        hour=2,
+    )
 
-    seconds_until_next_day = (next_day_start - now).total_seconds()
+    seconds_until_next_day = (next_event - now).total_seconds()
 
     return seconds_until_next_day
 
