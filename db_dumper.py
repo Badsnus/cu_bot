@@ -10,7 +10,7 @@ chat_id = getenv('DB_DUMB_CHANNEL_ID')
 
 url = f'https://api.telegram.org/bot{bot_token}/sendDocument'
 
-files = {'document': open('main.db', 'rb')}
+files = {'document': open('/scripts/main.db', 'rb')}
 data = {'chat_id': chat_id}
 
 response = post(url, files=files, data=data)

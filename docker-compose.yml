@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     volumes:
-      - /app/main.db:/tmp/cu/main.db
+      - /app/main.db:/tmp/cu_bot/main.db
 
   db_backup:
     build:
@@ -17,6 +17,6 @@ services:
     env_file:
       - .env
     volumes:
-      - /scripts/main.db:/tmp/cu/main.db
+      - /scripts/main.db:/tmp/cu_bot/main.db
     depends_on:
       - bot
