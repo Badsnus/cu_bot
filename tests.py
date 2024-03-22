@@ -6,10 +6,40 @@ from src.services.check_is_message_from_bot import check_is_message_from_bot
 
 
 class Tester:
+    @staticmethod
+    def parameterize(params: list[list]):
+        def decorator(func):
+            async def wrapper(*args2, **kwargs2):
+                for param in params:
+                    await func(*args2, *param, **kwargs2)
+
+            return wrapper
+
+        return decorator
+
+    BAD_WORDS = ['bad', 'gg', 'ver']
+
+    good_texts = [
+        'some text',
+        f'{BAD_WORDS[0]}w',
+        f'w{BAD_WORDS[0]}',
+        '',
+        'some text, s',
+    ]
+    GOOD_TEXTS = [[text] for text in good_texts]
+
+    bad_texts = BAD_WORDS + [
+        f'some world, '
+        f'{BAD_WORDS[0]}-',
+        f'{BAD_WORDS[1]}',
+        f'{BAD_WORDS[2]},fewfw',
+        f'some {BAD_WORDS[0]}',
+    ]
+    BAD_TEXTS = [[text] for text in bad_texts]
 
     async def set_up(self):
-        self.bad_words = ['bad', 'gg', 'ver']
-        MessageChecker.bad_words |= set(self.bad_words)
+
+        MessageChecker.bad_words |= set(self.BAD_WORDS)
 
         self.chat_with_moder = Chat(
             moderation_level=ChatModerationLevelEnum.on.value,
@@ -23,22 +53,6 @@ class Tester:
             chat_name='3',
         )
 
-        self.good_texts = [
-            'some text',
-            f'{self.bad_words[0]}w',
-            f'w{self.bad_words[0]}',
-            '',
-            'some text, s',
-        ]
-
-        self.bad_texts = [
-            f'some world, '
-            f'{self.bad_words[0]}-',
-            f'{self.bad_words[1]}',
-            f'{self.bad_words[2]},fewfw',
-            f'some {self.bad_words[0]}',
-        ]
-
     async def test_is_message_from_bot(self):
         assert await check_is_message_from_bot(
             None
@@ -48,73 +62,73 @@ class Tester:
             'some_info'
         ) is True, 'не выдает что это бот, при передаче via_bot'
 
-    async def test_message_check_with_moder_level_good_words(self):
+    @parameterize(GOOD_TEXTS)
+    async def test_message_check_with_moderation_on_good_words(self, text: str) -> None:
         chat = self.chat_with_moder
 
-        for text in self.good_texts:
-            assert MessageChecker(
-                chat,
-                text,
-                True,
-            ).check() is False, (
-                    'moder_on,via_bot should be False | word: ' + text
-            )
-            assert MessageChecker(
-                chat,
-                text,
-                False,
-            ).check() is True, 'moder_on should be True | word: ' + text
+        assert MessageChecker(
+            chat,
+            text,
+            True,
+        ).check() is False, (
+                'moder_on,via_bot should be False | word: ' + text
+        )
+        assert MessageChecker(
+            chat,
+            text,
+            False,
+        ).check() is True, 'moder_on should be True | word: ' + text
 
-    async def test_message_check_with_moder_level_bad_words(self):
+    @parameterize(BAD_TEXTS)
+    async def test_message_check_with_moderation_on_bad_words(self, text: str) -> None:
         chat = self.chat_with_moder
 
-        for text in self.bad_texts:
-            assert MessageChecker(
-                chat,
-                text,
-                True,
-            ).check() is False, (
-                    'moder_on,via_bot should be False | word: ' + text
-            )
-            assert MessageChecker(
-                chat,
-                text,
-                False,
-            ).check() is False, 'moder_on should be False | word: ' + text
+        assert MessageChecker(
+            chat,
+            text,
+            True,
+        ).check() is False, (
+                'moder_on,via_bot should be False | word: ' + text
+        )
+        assert MessageChecker(
+            chat,
+            text,
+            False,
+        ).check() is False, 'moder_on should be False | word: ' + text
 
-    async def test_message_check_without_moder_level_good_words(self):
+    @parameterize(GOOD_TEXTS)
+    async def test_message_check_without_moderation_off_good_words(self, text: str) -> None:
         chat = self.chat_without_moder
 
-        for text in self.good_texts:
-            assert MessageChecker(
-                chat,
-                text,
-                True,
-            ).check() is True, (
-                    'moder_off,via_bot should be True | word: ' + text
-            )
-            assert MessageChecker(
-                chat,
-                text,
-                False,
-            ).check() is True, 'moder_off should be True | word: ' + text
+        assert MessageChecker(
+            chat,
+            text,
+            True,
+        ).check() is True, (
+                'moder_off,via_bot should be True | word: ' + text
+        )
+        assert MessageChecker(
+            chat,
+            text,
+            False,
+        ).check() is True, 'moder_off should be True | word: ' + text
 
-    async def test_message_check_without_moder_level_bad_words(self):
+    @parameterize(BAD_TEXTS)
+    async def test_message_check_without_moderation_off_bad_words(self, text: str) -> None:
         chat = self.chat_without_moder
 
-        for text in self.bad_texts:
-            assert MessageChecker(
-                chat,
-                text,
-                True,
-            ).check() is True, (
-                    'moder_off,via_bot should be True | word: ' + text
-            )
-            assert MessageChecker(
-                chat,
-                text,
-                False,
-            ).check() is True, 'moder_off should be True | word: ' + text
+        assert MessageChecker(
+            chat,
+            text,
+            True,
+        ).check() is True, (
+                'moder_off,via_bot should be True | word: ' + text
+        )
+        assert MessageChecker(
+            chat,
+            text,
+            False,
+        ).check() is True, 'moder_off should be True | word: ' + text
 
     async def run(self):
         await self.set_up()
