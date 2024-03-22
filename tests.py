@@ -63,7 +63,8 @@ class Tester:
         ) is True, 'не выдает что это бот, при передаче via_bot'
 
     @parameterize(GOOD_TEXTS)
-    async def test_message_check_with_moderation_on_good_words(self, text: str) -> None:
+    async def test_message_check_with_moderation_on_good_words(self,
+                                                               text: str):
         chat = self.chat_with_moder
 
         assert MessageChecker(
@@ -80,7 +81,8 @@ class Tester:
         ).check() is True, 'moder_on should be True | word: ' + text
 
     @parameterize(BAD_TEXTS)
-    async def test_message_check_with_moderation_on_bad_words(self, text: str) -> None:
+    async def test_message_check_with_moderation_on_bad_words(self,
+                                                              text: str):
         chat = self.chat_with_moder
 
         assert MessageChecker(
@@ -97,7 +99,8 @@ class Tester:
         ).check() is False, 'moder_on should be False | word: ' + text
 
     @parameterize(GOOD_TEXTS)
-    async def test_message_check_without_moderation_off_good_words(self, text: str) -> None:
+    async def test_message_check_without_moderation_off_good_words(self,
+                                                                   text: str):
         chat = self.chat_without_moder
 
         assert MessageChecker(
@@ -114,7 +117,8 @@ class Tester:
         ).check() is True, 'moder_off should be True | word: ' + text
 
     @parameterize(BAD_TEXTS)
-    async def test_message_check_without_moderation_off_bad_words(self, text: str) -> None:
+    async def test_message_check_without_moderation_off_bad_words(self,
+                                                                  text: str):
         chat = self.chat_without_moder
 
         assert MessageChecker(
