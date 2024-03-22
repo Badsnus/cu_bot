@@ -7,15 +7,6 @@ from src.services.check_is_message_from_bot import check_is_message_from_bot
 
 class Tester:
 
-    async def test_is_message_from_bot(self):
-        assert await check_is_message_from_bot(
-            None
-        ) is False, 'без bot_via выдает, что это бот'
-
-        assert await check_is_message_from_bot(
-            'some_info'
-        ) is True, 'не выдает что это бот, при передаче via_bot'
-
     async def set_up(self):
         self.bad_words = ['bad', 'gg', 'ver']
         MessageChecker.bad_words |= set(self.bad_words)
@@ -47,6 +38,15 @@ class Tester:
             f'{self.bad_words[2]},fewfw',
             f'some {self.bad_words[0]}',
         ]
+
+    async def test_is_message_from_bot(self):
+        assert await check_is_message_from_bot(
+            None
+        ) is False, 'без bot_via выдает, что это бот'
+
+        assert await check_is_message_from_bot(
+            'some_info'
+        ) is True, 'не выдает что это бот, при передаче via_bot'
 
     async def test_message_check_with_moder_level_good_words(self):
         chat = self.chat_with_moder
