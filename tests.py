@@ -16,109 +16,109 @@ class Tester:
             'some_info'
         ) is True, 'не выдает что это бот, при передаче via_bot'
 
-    async def test_message_check_with_moder_level(self):
-        b_w = ['bad', 'gg', 'ver']
-        MessageChecker.bad_words |= set(b_w)
+    async def set_up(self):
+        self.bad_words = ['bad', 'gg', 'ver']
+        MessageChecker.bad_words |= set(self.bad_words)
 
-        # CHAT MODERATION ON
-        chat = Chat(
+        self.chat_with_moder = Chat(
             moderation_level=ChatModerationLevelEnum.on.value,
             telegram_id=1,
             chat_name='2',
         )
 
-        texts_without_bad_words = [
-            'some text',
-            f'{b_w[0]}w',
-            f'w{b_w[0]}',
-            '',
-            'some text, s',
-        ]
-        for txt in texts_without_bad_words:
-            assert MessageChecker(
-                chat,
-                txt,
-                True,
-            ).check() is False, (
-                    'moder_on,via_bot should be False | word: ' + txt
-            )
-            assert MessageChecker(
-                chat,
-                txt,
-                False,
-            ).check() is True, 'moder_on should be True | word: ' + txt
-
-        texts_with_bad_words = [
-            f'some world, '
-            f'{b_w[0]}-',
-            f'{b_w[1]}',
-            f'{b_w[2]},fewfw',
-            f'some {b_w[0]}',
-        ]
-        for txt in texts_with_bad_words:
-            assert MessageChecker(
-                chat,
-                txt,
-                True,
-            ).check() is False, (
-                    'moder_on,via_bot should be False | word: ' + txt
-            )
-            assert MessageChecker(
-                chat,
-                txt,
-                False,
-            ).check() is False, 'moder_on should be False | word: ' + txt
-
-        # CHAT MODERATION OFF
-        chat = Chat(
+        self.chat_without_moder = Chat(
             moderation_level=ChatModerationLevelEnum.off.value,
-            telegram_id=1,
-            chat_name='2',
+            telegram_id=2,
+            chat_name='3',
         )
 
-        texts_without_bad_words = [
+        self.good_texts = [
             'some text',
-            f'{b_w[0]}w',
-            f'w{b_w[0]}',
+            f'{self.bad_words[0]}w',
+            f'w{self.bad_words[0]}',
             '',
             'some text, s',
         ]
-        for txt in texts_without_bad_words:
-            assert MessageChecker(
-                chat,
-                txt,
-                True,
-            ).check() is True, (
-                    'moder_off,via_bot should be True | word: ' + txt
-            )
-            assert MessageChecker(
-                chat,
-                txt,
-                False,
-            ).check() is True, 'moder_off should be True | word: ' + txt
 
-        texts_with_bad_words = [
+        self.bad_texts = [
             f'some world, '
-            f'{b_w[0]}-',
-            f'{b_w[1]}',
-            f'{b_w[2]},fewfw',
-            f'some {b_w[0]}',
+            f'{self.bad_words[0]}-',
+            f'{self.bad_words[1]}',
+            f'{self.bad_words[2]},fewfw',
+            f'some {self.bad_words[0]}',
         ]
-        for txt in texts_with_bad_words:
+
+    async def test_message_check_with_moder_level_good_words(self):
+        chat = self.chat_with_moder
+
+        for text in self.good_texts:
             assert MessageChecker(
                 chat,
-                txt,
+                text,
                 True,
-            ).check() is True, (
-                    'moder_off,via_bot should be True | word: ' + txt
+            ).check() is False, (
+                    'moder_on,via_bot should be False | word: ' + text
             )
             assert MessageChecker(
                 chat,
-                txt,
+                text,
                 False,
-            ).check() is True, 'moder_oo should be True | word: ' + txt
+            ).check() is True, 'moder_on should be True | word: ' + text
+
+    async def test_message_check_with_moder_level_bad_words(self):
+        chat = self.chat_with_moder
+
+        for text in self.bad_texts:
+            assert MessageChecker(
+                chat,
+                text,
+                True,
+            ).check() is False, (
+                    'moder_on,via_bot should be False | word: ' + text
+            )
+            assert MessageChecker(
+                chat,
+                text,
+                False,
+            ).check() is False, 'moder_on should be False | word: ' + text
+
+    async def test_message_check_without_moder_level_good_words(self):
+        chat = self.chat_without_moder
+
+        for text in self.good_texts:
+            assert MessageChecker(
+                chat,
+                text,
+                True,
+            ).check() is True, (
+                    'moder_off,via_bot should be True | word: ' + text
+            )
+            assert MessageChecker(
+                chat,
+                text,
+                False,
+            ).check() is True, 'moder_off should be True | word: ' + text
+
+    async def test_message_check_without_moder_level_bad_words(self):
+        chat = self.chat_without_moder
+
+        for text in self.bad_texts:
+            assert MessageChecker(
+                chat,
+                text,
+                True,
+            ).check() is True, (
+                    'moder_off,via_bot should be True | word: ' + text
+            )
+            assert MessageChecker(
+                chat,
+                text,
+                False,
+            ).check() is True, 'moder_off should be True | word: ' + text
 
     async def run(self):
+        await self.set_up()
+
         for method_name in filter(lambda x: x.startswith('test_'),
                                   self.__dir__()):
 
