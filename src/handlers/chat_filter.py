@@ -22,11 +22,13 @@ async def chats_messages(message: types.Message, bot: Bot) -> None:
     text = message.text or message.caption or ''
 
     is_message_from_bot = await check_is_message_from_bot(message.via_bot)
+    is_from_channel = message.from_user.is_bot
 
     is_good = MessageChecker(
         chat=chat,
         text=text,
         is_from_bot=is_message_from_bot,
+        is_from_channel=is_from_channel,
     ).check()
 
     if is_good:
