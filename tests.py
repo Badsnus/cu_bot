@@ -71,6 +71,7 @@ class Tester:
             chat,
             text,
             True,
+            is_from_channel=False,
         ).check() is False, (
                 'moder_on,via_bot should be False | word: ' + text
         )
@@ -78,6 +79,8 @@ class Tester:
             chat,
             text,
             False,
+            is_from_channel=False,
+
         ).check() is True, 'moder_on should be True | word: ' + text
 
     @parameterize(BAD_TEXTS)
@@ -89,6 +92,8 @@ class Tester:
             chat,
             text,
             True,
+            is_from_channel=False,
+
         ).check() is False, (
                 'moder_on,via_bot should be False | word: ' + text
         )
@@ -96,6 +101,8 @@ class Tester:
             chat,
             text,
             False,
+            is_from_channel=False,
+
         ).check() is False, 'moder_on should be False | word: ' + text
 
     @parameterize(GOOD_TEXTS)
@@ -107,6 +114,8 @@ class Tester:
             chat,
             text,
             True,
+            is_from_channel=False,
+
         ).check() is True, (
                 'moder_off,via_bot should be True | word: ' + text
         )
@@ -114,6 +123,8 @@ class Tester:
             chat,
             text,
             False,
+            is_from_channel=False,
+
         ).check() is True, 'moder_off should be True | word: ' + text
 
     @parameterize(BAD_TEXTS)
@@ -125,6 +136,8 @@ class Tester:
             chat,
             text,
             True,
+            is_from_channel=False,
+
         ).check() is True, (
                 'moder_off,via_bot should be True | word: ' + text
         )
@@ -132,6 +145,8 @@ class Tester:
             chat,
             text,
             False,
+            is_from_channel=False,
+
         ).check() is True, 'moder_off should be True | word: ' + text
 
     async def run(self):
