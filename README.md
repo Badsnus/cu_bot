@@ -70,3 +70,44 @@ ____
 ### Запуск бота локально
 
     docker-compose up -d
+
+
+```mermaid
+erDiagram
+    CHAT {
+        BIGINT telegram_id PK
+        STRING chat_name
+        STRING moderation_level
+    }
+
+    USER {
+        BIGINT telegram_id PK
+        BOOLEAN is_admin
+    }
+
+    USER_CHAT {
+        INT id PK
+        BIGINT user_id
+        BIGINT chat_id
+    }
+
+    LOG {
+        INT id PK
+        BIGINT chat_id
+        BIGINT user_id
+        STRING message
+        DATETIME time
+        STRING chat_name
+        STRING user_name
+    }
+
+    WORD {
+        STRING word PK
+    }
+
+    CHAT ||--o{ USER_CHAT : has
+    USER ||--o{ USER_CHAT : participates
+    CHAT ||--o{ LOG : has
+    USER ||--o{ LOG : creates
+    
+```
