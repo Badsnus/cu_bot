@@ -13,6 +13,7 @@ router: Router = Router()
 @router.edited_message(F.chat.type != 'private')
 @router.message(F.chat.type != 'private')
 async def chats_messages(message: types.Message, bot: Bot) -> None:
+    print(message)
     chat = await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,

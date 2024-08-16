@@ -7,8 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.models import Chat, ChatModerationLevelEnum, UserChat
 from src.services.generate_invite_code import generate_invite_code
 
-print(generate_invite_code)
-
 
 class ChatRepo:
 
