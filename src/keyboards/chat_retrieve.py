@@ -16,11 +16,13 @@ class ToggleWhiteListCallback(CallbackData, prefix='toggle_white_list'):
     id: int
 
 
-class GetWhiteListMembersCallback(CallbackData, prefix='get_white_list_members'):
+class GetWhiteListMembersCallback(CallbackData,
+                                  prefix='get_white_list_members'):
     id: int
 
 
-class ChangeWhiteListMemberCallback(CallbackData, prefix='add_white_list_member'):
+class ChangeWhiteListMemberCallback(CallbackData,
+                                    prefix='add_white_list_member'):
     id: int
     is_add: bool
 

@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from aiogram import Router, Bot
+from aiogram import Bot, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
@@ -20,10 +20,11 @@ router: Router = Router()
 
 @router.callback_query(GetWhiteListMembersCallback.filter())
 async def change_white_list_status(call: CallbackQuery,
-                                   callback_data: GetWhiteListMembersCallback) -> None:
+                                   callback_data: GetWhiteListMembersCallback,
+                                   ) -> None:
     try:
         await call.message.delete()
-    except:  # todo obrabotat
+    except Exception:  # todo obrabotat
         pass
 
     await send_white_list_file(callback_data.id, call)
@@ -42,11 +43,15 @@ async def ask_file(call: CallbackQuery,
         is_add=callback_data.is_add,
         chat_id=callback_data.id,
     )
-    text = '<b>' + ('ДОБАВИТЬ в' if callback_data.is_add else 'УДАЛИТЬ из') + '</b>'
+    text = '<b>' + ('ДОБАВИТЬ в'
+                    if callback_data.is_add
+                    else 'УДАЛИТЬ из') + '</b>'
 
     await call.message.edit_text(
-        f'Пришлите txt файл - список пользователей, который вы хотите {text} в white list\n\n'
-        f'<b>Формат:</b>\n<code>@username1\nusername2\nusername3\n@username4</code>',
+        f'Пришлите txt файл - список пользователей,'
+        f' который вы хотите {text} в white list\n\n'
+        f'<b>Формат:</b>\n<code>@username1\nusername2\n'
+        f'username3\n@username4</code>',
         reply_markup=get_back_keyboard(callback_data.id),
     )
 
@@ -65,7 +70,10 @@ async def edit_white_list_handler(message: Message,
         await message.answer('Произошла ошибка')
         return
     if message.document is None:
-        await message.answer('Пришлите документ', reply_markup=get_back_keyboard(chat_id))
+        await message.answer(
+            'Пришлите документ',
+            reply_markup=get_back_keyboard(chat_id),
+        )
         return
 
     await state.clear()
@@ -77,7 +85,7 @@ async def edit_white_list_handler(message: Message,
         text = file.read()
     try:
         os.remove(filename)
-    except:
+    except Exception:
         pass
 
     await edit_white_list(chat_id, is_add, text)

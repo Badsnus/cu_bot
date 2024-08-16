@@ -16,7 +16,10 @@ async def check_can_user_join(chat_id: int,
     if not chat.is_white_list_on:
         return True
 
-    white_list = await db.white_list.get_user_in_white_list(chat.telegram_id, username)
+    white_list = await db.white_list.get_user_in_white_list(
+        chat.telegram_id,
+        username,
+    )
     if not white_list:
         return False
 

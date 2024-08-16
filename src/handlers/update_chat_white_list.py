@@ -9,7 +9,8 @@ router: Router = Router()
 
 @router.callback_query(ToggleWhiteListCallback.filter())
 async def change_white_list_status(call: CallbackQuery,
-                                   callback_data: ToggleWhiteListCallback) -> None:
+                                   callback_data: ToggleWhiteListCallback,
+                                   ) -> None:
     settings = ChatSettingsView(callback_data.id)
     text, markup = await settings.update_white_list_status()
 

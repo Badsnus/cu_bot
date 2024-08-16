@@ -13,7 +13,8 @@ async def edit_white_list(chat_id: int,
         await db.white_list.remove_usernames(chat_id, list(usernames))
         return
 
-    already_have = set(x.username for x in await db.white_list.get_by_chat(chat_id))
+    already_have = set(x.username
+                       for x in await db.white_list.get_by_chat(chat_id))
     usernames = usernames - already_have
 
     await db.white_list.add_usernames(chat_id, list(usernames))

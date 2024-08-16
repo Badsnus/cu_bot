@@ -1,4 +1,4 @@
-from aiogram import F, Router, Bot
+from aiogram import Bot, F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
@@ -31,5 +31,9 @@ async def check_invite_link(message: Message, bot: Bot) -> None:
         await message.answer('?')
         return
 
-    text = await check_access_to_chat(invite_code, message.from_user.username, bot)
+    text = await check_access_to_chat(
+        invite_code,
+        message.from_user.username,
+        bot,
+    )
     await message.answer(text, disable_web_page_preview=True)

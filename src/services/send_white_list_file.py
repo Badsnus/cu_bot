@@ -8,7 +8,9 @@ from src.services.get_db import get_db
 
 
 @get_db
-async def send_white_list_file(chat_id: int, call: CallbackQuery, db: DB) -> None:
+async def send_white_list_file(chat_id: int,
+                               call: CallbackQuery,
+                               db: DB) -> None:
     filename = str(uuid.uuid4()) + '.txt'
 
     data = await db.white_list.get_by_chat(chat_id)
@@ -18,11 +20,13 @@ async def send_white_list_file(chat_id: int, call: CallbackQuery, db: DB) -> Non
 
     try:
 
-        await call.message.answer_document(document=FSInputFile(filename, 'white_list.txt'))
+        await call.message.answer_document(
+            document=FSInputFile(filename, 'white_list.txt'),
+        )
 
         try:
             os.remove(filename)
-        except:
+        except Exception:
             pass
-    except:
+    except Exception:
         await call.message.answer('White list пуст')

@@ -21,7 +21,8 @@ class ChatRepo:
                      commit=True) -> Chat:
         assert moderation_level in ChatModerationLevelEnum.__members__
 
-        while await self.get_by_invite_code(invite_code := generate_invite_code()):
+        while await self.get_by_invite_code(
+                invite_code := generate_invite_code()):
             pass
 
         chat = Chat(
@@ -53,10 +54,11 @@ class ChatRepo:
             select(Chat).where(Chat.invite_code == invite_code)
         )
 
-    async def update_name_and_telegram_channel_id(self,
-                                                  chat: Chat,
-                                                  new_chat_name: str,
-                                                  channel_telegram_id: int) -> Chat:
+    async def update_name_and_telegram_channel_id(
+            self,
+            chat: Chat,
+            new_chat_name: str,
+            channel_telegram_id: int) -> Chat:
         f1 = chat.chat_name != new_chat_name
         f2 = chat.channel_telegram_id != channel_telegram_id
 

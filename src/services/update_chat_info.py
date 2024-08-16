@@ -20,7 +20,9 @@ async def update_chat_info(chat_id: int,
     if chat is None:
         chat = await db.chat.create(
             telegram_id=chat_id, chat_name=chat_name,
-            channel_telegram_id=from_user_id == 777000 and sender_chat_id or None,
+            channel_telegram_id=(
+                from_user_id == 777000 and sender_chat_id or None
+            ),
         )
 
         admins: list[ChatMemberAdministrator] = (

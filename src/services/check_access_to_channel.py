@@ -1,5 +1,3 @@
-import uuid
-
 from aiogram import Bot
 
 from src.repo import DB
@@ -14,9 +12,13 @@ async def check_access_to_chat(invite_code: str,
     chat = await db.chat.get_by_invite_code(invite_code)
 
     if chat is None:
-        return '<b>Чата с таким кодом не существует</b>\nЕсли вы думаете, что это ошибка - напишите @badsnus'
+        return ('<b>Чата с таким кодом не существует</b>'
+                '\nЕсли вы думаете, что это ошибка - напишите @badsnus')
 
-    is_in_white_list = await db.white_list.check_is_user_in_white_list(chat.telegram_id, username)
+    is_in_white_list = await db.white_list.check_is_user_in_white_list(
+        chat.telegram_id,
+        username,
+    )
 
     if not is_in_white_list:
         return '<b>Вас нет в списке участников - напишите администратору</b>'
@@ -27,7 +29,8 @@ async def check_access_to_chat(invite_code: str,
         name=username,
     )
 
-    text = f'<b>{chat.chat_name}</b>\n\n<b>Ссылка на чат:</b> {chat_invite_link.invite_link}'
+    text = (f'<b>{chat.chat_name}</b>\n\n<b>Ссылка на чат:</b> '
+            f'{chat_invite_link.invite_link}')
     if chat.channel_telegram_id:
         try:
             channel_invite_link = await bot.create_chat_invite_link(
@@ -35,8 +38,10 @@ async def check_access_to_chat(invite_code: str,
                 creates_join_request=True,
                 name=username,
             )
-            text += f'\n<b>Ссылка на канал:</b> {channel_invite_link.invite_link}'
-        except:
-            text += 'Доступ к каналу не настроен - сообщите об этом администратору'
+            text += (f'\n<b>Ссылка на канал:</b> '
+                     f'{channel_invite_link.invite_link}')
+        except Exception:
+            text += ('Доступ к каналу не настроен -'
+                     ' сообщите об этом администратору')
 
     return text
