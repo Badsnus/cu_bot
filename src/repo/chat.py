@@ -5,6 +5,9 @@ from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models import Chat, ChatModerationLevelEnum, UserChat
+from src.services.generate_invite_code import generate_invite_code
+
+print(generate_invite_code)
 
 
 class ChatRepo:
@@ -19,10 +22,14 @@ class ChatRepo:
                      commit=True) -> Chat:
         assert moderation_level in ChatModerationLevelEnum.__members__
 
+        while await self.get_by_invite_code(invite_code := generate_invite_code()):
+            pass
+
         chat = Chat(
             telegram_id=telegram_id,
             chat_name=chat_name,
             moderation_level=moderation_level,
+            invite_code=invite_code,
         )
 
         self.session.add(chat)
@@ -34,6 +41,11 @@ class ChatRepo:
     async def get(self, telegram_id: int) -> Chat | None:
         return await self.session.scalar(
             select(Chat).where(Chat.telegram_id == telegram_id)
+        )
+
+    async def get_by_invite_code(self, invite_code: str) -> Chat:
+        return await self.session.scalar(
+            select(Chat).where(Chat.invite_code == invite_code)
         )
 
     async def update_name(self, chat: Chat, new_chat_name: str) -> Chat:

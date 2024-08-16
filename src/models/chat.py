@@ -37,6 +37,12 @@ class Chat(Base):
         nullable=True,
     )
 
+    invite_code = Column(
+        String(10),
+        unique=True,
+        index=True,
+    )
+
 
 class UserChat(Base):
     __tablename__ = 'users_chats'
