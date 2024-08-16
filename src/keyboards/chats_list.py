@@ -33,3 +33,14 @@ async def get_show_chats_keyboard(user_id: int, db) -> InlineKeyboardMarkup:
         ),
     )
     return builder.as_markup()
+
+
+def get_back_keyboard(chat_id: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text='Вернуться назад',
+                callback_data=RetrieveChatCallback(id=chat_id).pack()
+            )
+        ],
+    ])

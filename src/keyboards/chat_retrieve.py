@@ -20,12 +20,9 @@ class GetWhiteListMembersCallback(CallbackData, prefix='get_white_list_members')
     id: int
 
 
-class AddWhiteListMemberCallback(CallbackData, prefix='add_white_list_member'):
+class ChangeWhiteListMemberCallback(CallbackData, prefix='add_white_list_member'):
     id: int
-
-
-class DeleteWhiteListMemberCallback(CallbackData, prefix='delete_white_list_member'):
-    id: int
+    is_add: bool
 
 
 async def get_retrieve_keyboard(chat: Chat) -> InlineKeyboardMarkup:
@@ -56,14 +53,16 @@ async def get_retrieve_keyboard(chat: Chat) -> InlineKeyboardMarkup:
             [
                 InlineKeyboardButton(
                     text='Добавить юзеров в WL',
-                    callback_data=AddWhiteListMemberCallback(
+                    callback_data=ChangeWhiteListMemberCallback(
                         id=chat.telegram_id,
+                        is_add=True,
                     ).pack(),
                 ),
                 InlineKeyboardButton(
                     text='Удалить юзеров в WL',
-                    callback_data=DeleteWhiteListMemberCallback(
+                    callback_data=ChangeWhiteListMemberCallback(
                         id=chat.telegram_id,
+                        is_add=False,
                     ).pack(),
                 ),
             ],

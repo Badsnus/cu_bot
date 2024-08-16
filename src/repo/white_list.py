@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import and_, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models import WhiteList
@@ -15,3 +15,23 @@ class WhiteListRepo:
         return (
             await self.session.scalars(select(WhiteList).where(WhiteList.chat_id == chat_id))
         ).all()
+
+    async def remove_usernames(self, chat_id: int, usernames: list[str]) -> None:
+        await self.session.execute(
+            delete(WhiteList).where(and_(
+                WhiteList.chat_id == chat_id,
+                WhiteList.username.in_(usernames)
+            ))
+        )
+        await self.session.commit()
+
+    async def add_usernames(self, chat_id: int, usernames: list[str]) -> None:
+        units = []
+        for username in usernames:
+            units.append(WhiteList(
+                chat_id=chat_id,
+                username=username,
+            ))
+
+        self.session.add_all(units)
+        await self.session.commit()
