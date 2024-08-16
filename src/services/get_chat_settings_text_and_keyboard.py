@@ -27,6 +27,11 @@ class ChatSettingsView:
         return await self._get_text_and_keyboard(chat)
 
     @get_db
-    async def update(self, db: DB) -> tuple[str, InlineKeyboardMarkup]:
+    async def update_moder_level(self, db: DB) -> tuple[str, InlineKeyboardMarkup]:
         chat = await db.chat.update_moder_level(self._chat_id)
+        return await self._get_text_and_keyboard(chat)
+
+    @get_db
+    async def update_white_list_status(self, db: DB) -> tuple[str, InlineKeyboardMarkup]:
+        chat = await db.chat.update_white_list_status(self._chat_id)
         return await self._get_text_and_keyboard(chat)

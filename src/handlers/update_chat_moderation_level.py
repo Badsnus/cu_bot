@@ -11,6 +11,6 @@ router: Router = Router()
 async def change_level(call: CallbackQuery,
                        callback_data: ChangeModerLevelCallback) -> None:
     settings = ChatSettingsView(callback_data.id)
-    text, markup = await settings.update()
+    text, markup = await settings.update_moder_level()
 
     await call.message.edit_text(text, reply_markup=markup)

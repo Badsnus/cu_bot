@@ -80,6 +80,16 @@ class ChatRepo:
 
         return chat
 
+    async def update_white_list_status(self, chat_id: int) -> Chat:
+        chat = await self.get(chat_id)
+
+        chat.is_white_list_on = not chat.is_white_list_on
+
+        self.session.add(chat)
+        await self.session.commit()
+
+        return chat
+
     async def add_admins(self,
                          admins: list[ChatMemberAdministrator],
                          chat_id: int,
