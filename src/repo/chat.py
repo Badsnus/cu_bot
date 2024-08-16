@@ -17,6 +17,7 @@ class ChatRepo:
                      telegram_id: int,
                      chat_name: str,
                      moderation_level: str = ChatModerationLevelEnum.on.value,
+                     channel_telegram_id: int | None = None,
                      commit=True) -> Chat:
         assert moderation_level in ChatModerationLevelEnum.__members__
 
@@ -28,6 +29,7 @@ class ChatRepo:
             chat_name=chat_name,
             moderation_level=moderation_level,
             invite_code=invite_code,
+            channel_telegram_id=channel_telegram_id,
         )
 
         self.session.add(chat)
@@ -46,11 +48,21 @@ class ChatRepo:
             select(Chat).where(Chat.invite_code == invite_code)
         )
 
-    async def update_name(self, chat: Chat, new_chat_name: str) -> Chat:
-        chat.chat_name = new_chat_name
+    async def update_name_and_telegram_channel_id(self,
+                                                  chat: Chat,
+                                                  new_chat_name: str,
+                                                  channel_telegram_id: int) -> Chat:
+        f1 = chat.chat_name != new_chat_name
+        f2 = chat.channel_telegram_id != channel_telegram_id
 
-        self.session.add(chat)
-        await self.session.commit()
+        if f1:
+            chat.chat_name = new_chat_name
+        if f2:
+            chat.channel_telegram_id = channel_telegram_id
+
+        if f1 or f2:
+            self.session.add(chat)
+            await self.session.commit()
 
         return chat
 

@@ -35,6 +35,7 @@ class Chat(Base):
     channel_telegram_id = Column(
         BigInteger(),
         nullable=True,
+        unique=True,
     )
 
     invite_code = Column(

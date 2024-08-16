@@ -13,12 +13,13 @@ router: Router = Router()
 @router.edited_message(F.chat.type != 'private')
 @router.message(F.chat.type != 'private')
 async def chats_messages(message: types.Message, bot: Bot) -> None:
-    print(message)
     chat = await update_chat_info(
         chat_id=message.chat.id,
         chat_name=message.chat.title,
         get_admins_method=bot.get_chat_administrators,
         bot_id=bot.id,
+        from_user_id=message.from_user.id,
+        sender_chat_id=message.sender_chat and message.sender_chat.id,
     )
 
     text = message.text or message.caption or ''
