@@ -7,7 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from config import Config, load_config
 from src.handlers import routers
 from src.models import Base, db_engine
-from src.services import clear_old_logs, get_db, MessageChecker
+from src.services import clear_old_logs, get_db, MessageChecker, ChatSettingsView
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,8 @@ async def main(db) -> None:
         default=DefaultBotProperties(parse_mode='HTML'),
     )
     dp: Dispatcher = Dispatcher()
+
+    ChatSettingsView.bot_link = (await bot.get_me()).username
 
     dp.include_routers(*routers)
 
