@@ -43,6 +43,11 @@ class ChatRepo:
             select(Chat).where(Chat.telegram_id == telegram_id)
         )
 
+    async def get_by_channel_id(self, channel_telegram_id: int) -> Chat | None:
+        return await self.session.scalar(
+            select(Chat).where(Chat.channel_telegram_id == channel_telegram_id)
+        )
+
     async def get_by_invite_code(self, invite_code: str) -> Chat:
         return await self.session.scalar(
             select(Chat).where(Chat.invite_code == invite_code)

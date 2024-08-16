@@ -12,9 +12,10 @@ async def update_chat_info(chat_id: int,
                            chat_name: str,
                            get_admins_method: Callable,
                            bot_id: int,
-                           from_user_id: int,
-                           sender_chat_id: int,
-                           db: DB) -> Chat:
+                           db: DB,
+                           from_user_id: int = 0,
+                           sender_chat_id: int | None = None,
+                           ) -> Chat:
     chat = await db.chat.get(chat_id)
     if chat is None:
         chat = await db.chat.create(
