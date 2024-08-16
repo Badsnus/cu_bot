@@ -32,6 +32,11 @@ class Chat(Base):
         default=ChatModerationLevelEnum.on,
     )
 
+    channel_telegram_id = Column(
+        BigInteger(),
+        nullable=True,
+    )
+
 
 class UserChat(Base):
     __tablename__ = 'users_chats'
