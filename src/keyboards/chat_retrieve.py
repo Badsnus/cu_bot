@@ -12,12 +12,74 @@ class ChangeModerLevelCallback(CallbackData, prefix='change_moder_level'):
     id: int
 
 
+class ToggleWhiteListCallback(CallbackData, prefix='toggle_white_list'):
+    id: int
+
+
+class GetWhiteListMembersCallback(CallbackData, prefix='get_white_list_members'):
+    id: int
+
+
+class AddWhiteListMemberCallback(CallbackData, prefix='add_white_list_member'):
+    id: int
+
+
+class DeleteWhiteListMemberCallback(CallbackData, prefix='delete_white_list_member'):
+    id: int
+
+
 async def get_retrieve_keyboard(chat: Chat) -> InlineKeyboardMarkup:
     toggle_text = (
         'Выключить модерацию'
         if chat.moderation_level == ChatModerationLevelEnum.on.value
         else 'Включить модерацию'
     )
+    if chat.is_white_list_on:
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    text='Выключить white list',
+                    callback_data=ToggleWhiteListCallback(
+                        id=chat.telegram_id,
+                    ).pack(),
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text='Получить участников WL',
+                    callback_data=GetWhiteListMembersCallback(
+                        id=chat.telegram_id,
+                    ).pack(),
+                ),
+
+            ],
+            [
+                InlineKeyboardButton(
+                    text='Добавить юзеров в WL',
+                    callback_data=AddWhiteListMemberCallback(
+                        id=chat.telegram_id,
+                    ).pack(),
+                ),
+                InlineKeyboardButton(
+                    text='Удалить юзеров в WL',
+                    callback_data=DeleteWhiteListMemberCallback(
+                        id=chat.telegram_id,
+                    ).pack(),
+                ),
+            ],
+        ]
+    else:
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    text='Включить white list',
+                    callback_data=ToggleWhiteListCallback(
+                        id=chat.telegram_id,
+                    ).pack(),
+                ),
+            ],
+        ]
+
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(
@@ -27,6 +89,7 @@ async def get_retrieve_keyboard(chat: Chat) -> InlineKeyboardMarkup:
                 ).pack(),
             ),
         ],
+        *buttons,
         [
             InlineKeyboardButton(
                 text='Выгрузить логи',

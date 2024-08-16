@@ -16,7 +16,8 @@ class ChatSettingsView:
             chat: Chat) -> tuple[str, InlineKeyboardMarkup]:
         return (
             f'Чат: <b>{chat.chat_name}\n</b>'
-            f'Статус модерирования: <b>{chat.moderation_level}</b>',
+            f'Статус модерирования: <b>{chat.moderation_level}</b>\n'
+            f'Канал: <b>{chat.channel_telegram_id or "❌"}</b>',
             await get_retrieve_keyboard(chat)
         )
 

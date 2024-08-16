@@ -1,7 +1,7 @@
 from enum import Enum
 
 from sqlalchemy import (
-    BigInteger, Column, Integer, String,
+    BigInteger, Boolean, Column, Integer, String,
 )
 
 from src.models import Base
@@ -42,6 +42,11 @@ class Chat(Base):
         String(10),
         unique=True,
         index=True,
+    )
+
+    is_white_list_on = Column(
+        Boolean(),
+        default=False,
     )
 
 
