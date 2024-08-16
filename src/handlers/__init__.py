@@ -13,6 +13,7 @@ from .update_chat_white_list import (
 )
 from .add_word import router as add_word_router
 from .delete_word import router as delete_word_router
+from .white_list_crud import router as white_list_crud_router
 
 routers = [
     start_router,
@@ -24,6 +25,7 @@ routers = [
     send_chats_logs_router,
     chat_update_moderation_router,
     update_chat_white_list_router,
+    white_list_crud_router,
     add_word_router,
     delete_word_router,
 ]  # don`t change order!
