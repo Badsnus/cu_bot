@@ -20,7 +20,7 @@ async def check_access_to_chat(invite_code: str,
         username,
     )
 
-    if not is_in_white_list:
+    if (not is_in_white_list) and chat.is_white_list_on:
         return '<b>Вас нет в списке участников - напишите администратору</b>'
 
     chat_invite_link = await bot.create_chat_invite_link(
